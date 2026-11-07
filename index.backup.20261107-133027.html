@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0e13">
+<title>Triathlon | Mon entraînement</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0b0e13;--panel:#151a22;--panel2:#1d2430;
+  --line:#2a3240;--txt:#f5f7fa;--muted:#9ba6b6;
+  --blue:#71aaff;--green:#65d5a0;--orange:#ffbb78;
+  --red:#ff8585;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+header{
+  position:sticky;top:0;z-index:5;background:#0b0e13f2;
+  border-bottom:1px solid var(--line);padding:17px 18px;
+}
+.header-inner{
+  max-width:900px;margin:auto;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;
+}
+.brand{font-size:19px;font-weight:750;letter-spacing:-.5px}
+.brand small{display:block;color:var(--muted);font-size:11px;
+  font-weight:500;letter-spacing:1.5px;margin-bottom:3px}
+main{
+  max-width:900px;margin:auto;padding:25px 16px 120px;
+  min-height:70vh;
+}
+h1{font-size:29px;letter-spacing:-.8px;margin:0}
+h2{font-size:19px;letter-spacing:-.3px;margin:0 0 15px}
+h3{margin:0;font-size:16px}
+p{line-height:1.5}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.top{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;margin-bottom:23px;flex-wrap:wrap;
+}
+.subtitle{color:var(--muted);font-size:14px;margin:7px 0 0}
+.panel{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:17px;padding:17px;margin-bottom:13px;
+}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid .panel{margin:0}
+.stat{font-size:31px;font-weight:750;letter-spacing:-1px;margin-top:9px}
+.btn{
+  background:var(--panel2);color:var(--txt);
+  border:1px solid var(--line);border-radius:11px;
+  padding:10px 13px;font-size:13px;font-weight:600;
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn.primary{background:var(--blue);color:#071321;border-color:var(--blue)}
+.btn.danger{color:var(--red)}
+.btn.smallbtn{padding:7px 10px;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.section{margin-top:28px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tag{
+  display:inline-block;border-radius:7px;padding:5px 8px;
+  background:var(--panel2);color:var(--muted);font-size:11px;
+  font-weight:650;
+}
+.run{color:var(--green)}
+.bike{color:var(--blue)}
+.swim{color:#b6a5ff}
+.done{color:var(--green)}
+.pending{color:var(--orange)}
+.item-title{font-size:16px;font-weight:700;margin:10px 0 5px}
+.item-meta{color:var(--muted);font-size:13px;line-height:1.6}
+.description{font-size:14px;line-height:1.6;white-space:pre-wrap;
+  overflow-wrap:anywhere;margin-top:10px}
+.filters{display:flex;gap:7px;overflow:auto;margin-bottom:17px}
+.filters .btn{white-space:nowrap}
+.filters .active{background:var(--txt);color:var(--bg)}
+.empty{
+  border:1px dashed var(--line);border-radius:15px;
+  padding:30px 17px;text-align:center;color:var(--muted);
+  font-size:14px;line-height:1.6;
+}
+nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:6;
+  background:#11161ded;border-top:1px solid var(--line);
+  padding:9px 6px calc(9px + env(safe-area-inset-bottom));
+  display:flex;justify-content:space-around;
+}
+nav button{
+  background:none;border:0;color:var(--muted);padding:9px 4px;
+  font-size:12px;font-weight:650;min-width:67px;
+}
+nav button.active{color:var(--blue)}
+.calendar-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:14px;
+}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.weekname{text-align:center;font-size:11px;color:var(--muted);padding:9px 0}
+.day{
+  min-width:0;min-height:74px;background:var(--panel);
+  border:1px solid var(--line);border-radius:9px;
+  text-align:left;padding:9px 6px;color:var(--txt);
+}
+.day.other{opacity:.35}
+.day.selected{border-color:var(--blue);background:#19283b}
+.day.today .number{color:var(--blue);font-weight:800}
+.number{font-size:13px}
+.dots{margin-top:11px;display:flex;gap:3px;flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.dot.completed{background:var(--green)}
+.weeklist{display:grid;gap:7px}
+.weekday{
+  text-align:left;border:1px solid var(--line);border-radius:12px;
+  padding:13px;background:var(--panel);color:var(--txt);
+}
+.weekday.selected{border-color:var(--blue)}
+.form-grid{display:grid;gap:13px;margin-top:15px}
+.field{display:grid;gap:6px}
+.field label{font-size:12px;color:var(--muted);font-weight:600}
+.field input,.field textarea,.field select{
+  width:100%;min-height:44px;padding:11px;
+  border:1px solid var(--line);border-radius:10px;
+  background:#202733;color:var(--txt);font-size:16px;
+}
+.field textarea{resize:vertical;min-height:85px}
+dialog{
+  border:1px solid var(--line);border-radius:18px;
+  background:var(--panel);color:var(--txt);
+  width:min(94vw,510px);max-height:85vh;overflow:auto;
+  padding:20px;
+}
+dialog::backdrop{background:#000a}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modalhead h2{margin:0}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+a{color:var(--blue)}
+a:focus-visible{outline:2px solid var(--blue)}
+.sep{height:1px;background:var(--line);margin:18px 0}
+@media(max-width:430px){
+  main{padding:21px 13px 115px}
+  h1{font-size:26px}
+  .day{min-height:67px;padding:8px 4px}
+  .calgrid{gap:3px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand"><small>MON ESPACE SPORT</small>TRIATHLON</div>
+    <button class="btn" data-action="backup">Sauvegarde</button>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<nav>
+  <button data-action="tab" data-tab="home">Accueil</button>
+  <button data-action="tab" data-tab="sessions">Séances</button>
+  <button data-action="tab" data-tab="calendar">Calendrier</button>
+  <button data-action="tab" data-tab="races">Courses</button>
+</nav>
+
+<dialog id="modal">
+  <div class="modalhead">
+    <h2 id="modalTitle"></h2>
+    <button class="btn" data-action="close">Fermer</button>
+  </div>
+  <div id="modalBody"></div>
+</dialog>
+<input id="importFile" type="file" accept=".json,application/json" hidden>
+
+<script>
+(()=>{
+"use strict";
+
+const STORE="triathlon-perso-v1";
+const empty=()=>({sessions:[],planned:[],races:[]});
+let state=load();
+let tab="home",filter="all",raceFilter="all",calMode="month";
+let viewDate=new Date();
+let selectedDate=iso(new Date());
+
+const main=document.getElementById("main");
+const modal=document.getElementById("modal");
+const sportNames={run:"Course à pied",bike:"Vélo",swim:"Natation"};
+const raceSports={run:"Course à pied",bike:"Cyclisme",swim:"Natation",tri:"Triathlon",other:"Autre"};
+
+function load(){
+  try{
+    const data=JSON.parse(localStorage.getItem(STORE));
+    if(data && Array.isArray(data.sessions) &&
+       Array.isArray(data.planned) && Array.isArray(data.races)) return data;
+  }catch(e){}
+  return empty();
+}
+function save(){
+  try{localStorage.setItem(STORE,JSON.stringify(state))}
+  catch(e){alert("Impossible d'enregistrer localement. Vérifie le stockage de ton navigateur.")}
+}
+function uid(){
+  return typeof crypto!=="undefined" && crypto.randomUUID
+    ?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function iso(d){
+  return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),
+    String(d.getDate()).padStart(2,"0")].join("-");
+}
+function parseDate(s){return new Date(s+"T12:00:00")}
+function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+n);return x}
+function monday(d){
+  const x=new Date(d);x.setDate(x.getDate()-(x.getDay()+6)%7);return x;
+}
+function dateLabel(s){
+  if(!s)return "Date non définie";
+  const d=parseDate(s);
+  return isNaN(d)?"Date non définie":
+    d.toLocaleDateString("fr-CH",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+}
+function monthLabel(d){
+  return d.toLocaleDateString("fr-CH",{month:"long",year:"numeric"});
+}
+function shortSport(s){return sportNames[s]||raceSports[s]||"Sport"}
+function sortPlanned(arr){
+  return [...arr].sort((a,b)=>
+    (a.date+" "+(a.time||"")).localeCompare(b.date+" "+(b.time||"")));
+}
+function sortRaces(arr){
+  return [...arr].sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
+}
+function emptyMsg(message){return `<div class="empty">${esc(message)}</div>`}
+function tag(text,cls=""){return `<span class="tag ${cls}">${esc(text)}</span>`}
+
+function render(){
+  document.querySelectorAll("nav button").forEach(b=>
+    b.classList.toggle("active",b.dataset.tab===tab));
+  const views={home:renderHome,sessions:renderSessions,
+    calendar:renderCalendar,races:renderRaces};
+  main.innerHTML=views[tab]();
+}
+function heading(title,sub,button=""){
+  return `<div class="top"><div><h1>${title}</h1>
+    <p class="subtitle">${sub}</p></div>${button}</div>`;
+}
+function actionBtn(label,act,id="",cl=""){
+  return `<button class="btn ${cl}" data-action="${act}"
+    data-id="${esc(id)}">${label}</button>`;
+}
+
+function plannedCard(p){
+  const done=p.done;
+  return `<div class="panel">
+    <div class="row">
+      ${tag(shortSport(p.sport),p.sport)}
+      ${tag(done?"Terminée":"À faire",done?"done":"pending")}
+    </div>
+    <div class="item-title">${esc(p.name)}</div>
+    <div class="item-meta">${esc(dateLabel(p.date))}
+      ${p.time?" · "+esc(p.time):""}
+      ${p.minutes?" · "+esc(p.minutes)+" min":""}</div>
+    ${p.goal?`<div class="item-meta">Objectif : ${esc(p.goal)}</div>`:""}
+    ${p.description?`<div class="description">${esc(p.description)}</div>`:""}
+    <div class="actions">
+      ${actionBtn(done?"Marquer à faire":"Terminer","toggle-plan",p.id,"smallbtn")}
+      ${actionBtn("Modifier","edit-plan",p.id,"smallbtn")}
+      ${actionBtn("Supprimer","delete-plan",p.id,"smallbtn danger")}
+    </div>
+  </div>`;
+}
+function raceCard(r){
+  return `<div class="panel">
+    <div class="row">
+      ${tag(raceSports[r.sport]||"Sport")}
+      ${tag(r.status==="registered"?"Inscrit":"Envisagé",
+        r.status==="registered"?"done":"pending")}
+    </div>
+    <div class="item-title">${esc(r.name)}</div>
+    <div class="item-meta">${esc(dateLabel(r.date))}
+      ${r.place?" · "+esc(r.place):""}
+      ${r.distance?" · "+esc(r.distance):""}</div>
+    ${r.goal?`<div class="description">Objectif : ${esc(r.goal)}</div>`:""}
+    ${r.url?`<p class="small"><a href="${esc(r.url)}"
+      target="_blank" rel="noopener noreferrer">Page de la course</a></p>`:""}
+    <div class="actions">
+      ${actionBtn(r.status==="registered"?"Remettre en envisagé":"Je suis inscrit",
+        "toggle-race",r.id,"smallbtn")}
+      ${actionBtn("Modifier","edit-race",r.id,"smallbtn")}
+      ${actionBtn("Supprimer","delete-race",r.id,"smallbtn danger")}
+    </div>
+  </div>`;
+}
+
+function renderHome(){
+  const today=iso(new Date());
+  const start=iso(monday(new Date()));
+  const end=iso(addDays(monday(new Date()),6));
+  const week=state.planned.filter(p=>p.date>=start&&p.date<=end);
+  const upcoming=sortPlanned(state.planned.filter(p=>p.date>=today&&!p.done)).slice(0,4);
+  const races=sortRaces(state.races.filter(r=>r.date>=today));
+  return heading("Bonjour !","Ton espace personnel de triathlon.")+`
+    <div class="grid">
+      <div class="panel">
+        <div class="small muted">Séances cette semaine</div>
+        <div class="stat">${week.length}</div>
+      </div>
+      <div class="panel">
+        <div class="small muted">Séances terminées</div>
+        <div class="stat">${week.filter(p=>p.done).length}</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="row"><h2>Prochains entraînements</h2>
+        ${actionBtn("Calendrier","tab-calendar")}</div>
+      ${upcoming.length?upcoming.map(plannedCard).join(""):
+        emptyMsg("Aucune séance à venir. Programme une séance depuis ta bibliothèque.")}
+    </div>
+    <div class="section">
+      <div class="row"><h2>Prochaines courses</h2>
+        ${actionBtn("Toutes les courses","tab-races")}</div>
+      ${races.length?races.slice(0,2).map(raceCard).join(""):
+        emptyMsg("Aucune compétition enregistrée.")}
+    </div>`;
+}
+
+function sessionCard(s){
+  return `<div class="panel">
+    <div class="row">
+      ${tag(shortSport(s.sport),s.sport)}
+      ${s.minutes?tag(s.minutes+" min"):""}
+    </div>
+    <div class="item-title">${esc(s.name)}</div>
+    ${s.goal?`<div class="item-meta">Objectif : ${esc(s.goal)}</div>`:""}
+    ${s.description?`<div class="description">${esc(s.description)}</div>`:""}
+    <div class="actions">
+      ${actionBtn("Programmer","plan-session",s.id,"primary smallbtn")}
+      ${actionBtn("Modifier","edit-session",s.id,"smallbtn")}
+      ${actionBtn("Supprimer","delete-session",s.id,"smallbtn danger")}
+    </div>
+  </div>`;
+}
+function filters(current,items,action){
+  return `<div class="filters">${items.map(([id,label])=>
+    `<button class="btn ${current===id?"active":""}"
+      data-action="${action}" data-id="${id}">${label}</button>`).join("")}</div>`;
+}
+function renderSessions(){
+  const list=state.sessions.filter(s=>filter==="all"||s.sport===filter);
+  return heading("Mes séances","Ta bibliothèque d'entraînements réutilisables.",
+    actionBtn("+ Nouvelle séance","new-session","","primary"))+
+    filters(filter,[["all","Toutes"],["run","Course à pied"],
+      ["bike","Vélo"],["swim","Natation"]],"filter-session")+
+    (list.length?list.map(sessionCard).join(""):
+      emptyMsg("Aucune séance dans cette catégorie. Ajoute ton premier entraînement."));
+}
+
+function renderCalendar(){
+  let dates=[];
+  if(calMode==="month"){
+    const first=new Date(viewDate.getFullYear(),viewDate.getMonth(),1);
+    const start=monday(first);
+    for(let i=0;i<42;i++)dates.push(addDays(start,i));
+  }else{
+    const start=monday(viewDate);
+    for(let i=0;i<7;i++)dates.push(addDays(start,i));
+  }
+  const title=calMode==="month"?monthLabel(viewDate):
+    `${dateLabel(iso(dates[0]))} au ${dateLabel(iso(dates[6]))}`;
+  const selected=sortPlanned(state.planned.filter(p=>p.date===selectedDate));
+  const weekdays=["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+  const dayCount=d=>state.planned.filter(p=>p.date===iso(d));
+  let body="";
+  if(calMode==="month"){
+    body=`<div class="calgrid">
+      ${weekdays.map(x=>`<div class="weekname">${x}</div>`).join("")}
+      ${dates.map(d=>{
+        const date=iso(d),entries=dayCount(d);
+        const other=d.getMonth()!==viewDate.getMonth();
+        return `<button class="day ${other?"other":""}
+          ${date===selectedDate?"selected":""}
+          ${date===iso(new Date())?"today":""}"
+          data-action="choose-date" data-id="${date}">
+          <div class="number">${d.getDate()}</div>
+          <div class="dots">${entries.slice(0,4).map(p=>
+            `<span class="dot ${p.done?"completed":""}"></span>`).join("")}</div>
+        </button>`;
+      }).join("")}
+    </div>`;
+  }else{
+    body=`<div class="weeklist">${dates.map(d=>{
+      const date=iso(d),entries=dayCount(d);
+      return `<button class="weekday ${date===selectedDate?"selected":""}"
+        data-action="choose-date" data-id="${date}">
+        <div class="row"><strong>${esc(dateLabel(date))}</strong>
+        ${tag(entries.length+" séance"+(entries.length>1?"s":""))}</div>
+        ${entries.length?`<div class="small muted" style="margin-top:7px">
+          ${esc(entries.map(p=>p.name).join(" · "))}</div>`:""}
+        </button>`;
+    }).join("")}</div>`;
+  }
+  return heading("Calendrier","Organise tes entraînements.")+
+    filters(calMode,[["month","Mois"],["week","Semaine"]],"calendar-mode")+
+    `<div class="calendar-bar">
+      ${actionBtn("‹","calendar-prev")}
+      <strong style="font-size:14px;text-align:center">${esc(title)}</strong>
+      ${actionBtn("›","calendar-next")}
+    </div>
+    ${body}
+    <div class="section">
+      <div class="top">
+        <div><h2 style="margin:0">${esc(dateLabel(selectedDate))}</h2>
+          <p class="subtitle">${selected.length} séance(s) programmée(s)</p></div>
+        ${actionBtn("+ Programmer","new-plan","","primary")}
+      </div>
+      ${selected.length?selected.map(plannedCard).join(""):
+        emptyMsg("Aucun entraînement prévu pour cette date.")}
+    </div>`;
+}
+function renderRaces(){
+  const list=sortRaces(state.races.filter(r=>
+    raceFilter==="all"||r.status===raceFilter));
+  return heading("Mes courses","Compétitions envisagées et inscriptions.",
+    actionBtn("+ Ajouter","new-race","","primary"))+
+    filters(raceFilter,[["all","Toutes"],["wishlist","Envisagées"],
+      ["registered","Inscrites"]],"filter-race")+
+    (list.length?list.map(raceCard).join(""):
+      emptyMsg("Aucune course dans cette catégorie."));
+}
+
+function showModal(title,body){
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalBody").innerHTML=body;
+  if(!modal.open)modal.showModal();
+}
+function closeModal(){if(modal.open)modal.close()}
+function field(label,name,value="",type="text",required=false){
+  return `<div class="field"><label for="f-${name}">${label}</label>
+    <input id="f-${name}" name="${name}" type="${type}"
+    value="${esc(value)}" ${required?"required":""}
+    ${type==="number"?'min="0" step="1"':""}></div>`;
+}
+function area(label,name,value=""){
+  return `<div class="field"><label for="f-${name}">${label}</label>
+    <textarea id="f-${name}" name="${name}">${esc(value)}</textarea></div>`;
+}
+function selectField(label,name,options,value){
+  return `<div class="field"><label for="f-${name}">${label}</label>
+    <select name="${name}" id="f-${name}">
+      ${options.map(([id,text])=>
+        `<option value="${esc(id)}" ${id===value?"selected":""}>
+        ${esc(text)}</option>`).join("")}
+    </select></div>`;
+}
+function formButtons(label="Enregistrer"){
+  return `<div class="form-actions">
+    <button type="button" class="btn" data-action="close">Annuler</button>
+    <button class="btn primary" type="submit">${label}</button>
+  </div>`;
+}
+function sessionForm(id){
+  const s=state.sessions.find(x=>x.id===id)||{};
+  showModal(id?"Modifier la séance":"Nouvelle séance",
+    `<form class="form-grid" data-form="session" data-id="${esc(id||"")}">
+      ${field("Nom de la séance *","name",s.name,"text",true)}
+      ${selectField("Sport","sport",Object.entries(sportNames),s.sport||"run")}
+      ${field("Durée prévue (minutes)","minutes",s.minutes||"","number")}
+      ${field("Objectif (allure, puissance, FC...)","goal",s.goal)}
+      ${area("Description de la séance", "description",s.description)}
+      ${formButtons()}</form>`);
+}
+function planForm(id,edit=false){
+  if(edit){
+    const p=state.planned.find(x=>x.id===id);
+    if(!p)return;
+    showModal("Modifier l'entraînement",
+      `<form class="form-grid" data-form="edit-plan" data-id="${esc(id)}">
+        ${field("Nom *","name",p.name,"text",true)}
+        ${field("Date *","date",p.date,"date",true)}
+        ${field("Heure (facultative)","time",p.time||"","time")}
+        ${field("Durée (minutes)","minutes",p.minutes||"","number")}
+        ${field("Objectif","goal",p.goal)}
+        ${area("Description","description",p.description)}
+        ${formButtons()}</form>`);
+    return;
+  }
+  if(!state.sessions.length){
+    alert("Crée d'abord une séance dans ta bibliothèque.");
+    tab="sessions";render();return;
+  }
+  const selected=state.sessions.find(s=>s.id===id)||state.sessions[0];
+  showModal("Programmer une séance",
+    `<form class="form-grid" data-form="plan">
+      ${selectField("Séance", "sessionId",
+        state.sessions.map(s=>[s.id,shortSport(s.sport)+" · "+s.name]),selected.id)}
+      ${field("Date *","date",selectedDate,"date",true)}
+      ${field("Heure (facultative)","time","","time")}
+      ${formButtons("Programmer")}</form>`);
+}
+function raceForm(id){
+  const r=state.races.find(x=>x.id===id)||{};
+  showModal(id?"Modifier la course":"Ajouter une course",
+    `<form class="form-grid" data-form="race" data-id="${esc(id||"")}">
+      ${field("Nom de la course *","name",r.name,"text",true)}
+      ${field("Date *","date",r.date||iso(new Date()),"date",true)}
+      ${selectField("Discipline","sport",Object.entries(raceSports),r.sport||"tri")}
+      ${field("Lieu","place",r.place)}
+      ${field("Distance / format","distance",r.distance)}
+      ${selectField("Statut","status",
+        [["wishlist","Envisagée"],["registered","Inscrite"]],
+        r.status||"wishlist")}
+      ${field("Objectif personnel","goal",r.goal)}
+      ${field("Lien d'inscription","url",r.url,"url")}
+      ${formButtons()}</form>`);
+}
+function backupModal(){
+  showModal("Mes données",`
+    <p class="muted small">Tes données sont enregistrées uniquement dans
+    ce navigateur, sur cet appareil.</p>
+    <div class="sep"></div>
+    <h3>Exporter une sauvegarde</h3>
+    <p class="muted small">Télécharge un fichier JSON contenant tes séances,
+    ton calendrier et tes courses.</p>
+    <button class="btn primary" data-action="export">Exporter mes données</button>
+    <div class="sep"></div>
+    <h3>Importer une sauvegarde</h3>
+    <p class="muted small">Restaure un fichier JSON précédemment exporté.
+    L'importation remplace les données actuellement enregistrées.</p>
+    <button class="btn" data-action="import">Importer un fichier JSON</button>
+    <div class="sep"></div>
+    <div class="small muted">
+      ${state.sessions.length} séances · ${state.planned.length} entraînements
+      programmés · ${state.races.length} courses
+    </div>`);
+}
+function exportData(){
+  const payload={
+    app:"Triathlon Perso",version:1,
+    exportedAt:new Date().toISOString(),data:state
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],
+    {type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="triathlon-sauvegarde-"+iso(new Date())+".json";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function validateImport(d){
+  if(!d||!["sessions","planned","races"].every(k=>Array.isArray(d[k])))
+    throw new Error("Format incompatible");
+  const plain=x=>x&&typeof x==="object"&&!Array.isArray(x);
+  if(!["sessions","planned","races"].every(k=>d[k].every(plain)))
+    throw new Error("Contenu invalide");
+  return {
+    sessions:d.sessions,
+    planned:d.planned,
+    races:d.races
+  };
+}
+document.getElementById("importFile").addEventListener("change",async e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  try{
+    const raw=JSON.parse(await file.text());
+    const imported=validateImport(raw.data||raw);
+    if(!confirm("Remplacer toutes les données locales par cette sauvegarde ?"))return;
+    state=imported;
+    save();closeModal();render();
+    alert("Sauvegarde importée.");
+  }catch(err){
+    alert("Impossible d'importer ce fichier JSON : "+err.message);
+  }finally{e.target.value=""}
+});
+
+document.addEventListener("submit",e=>{
+  const f=e.target;
+  if(!f.matches("form[data-form]"))return;
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(f).entries());
+  const id=f.dataset.id;
+  const kind=f.dataset.form;
+  if(kind==="session"){
+    const obj={
+      name:d.name.trim(),sport:d.sport,
+      minutes:Number(d.minutes)||0,
+      goal:d.goal.trim(),description:d.description.trim()
+    };
+    if(!obj.name)return;
+    if(id){
+      const s=state.sessions.find(x=>x.id===id);
+      if(s)Object.assign(s,obj);
+    }else state.sessions.push({id:uid(),...obj});
+  }
+  if(kind==="plan"){
+    const s=state.sessions.find(x=>x.id===d.sessionId);
+    if(!s)return;
+    state.planned.push({
+      ...s,id:uid(),date:d.date,time:d.time||"",done:false
+    });
+    selectedDate=d.date;viewDate=parseDate(d.date);
+    tab="calendar";
+  }
+  if(kind==="edit-plan"){
+    const p=state.planned.find(x=>x.id===id);
+    if(p)Object.assign(p,{
+      name:d.name.trim(),date:d.date,time:d.time||"",
+      minutes:Number(d.minutes)||0,goal:d.goal.trim(),
+      description:d.description.trim()
+    });
+    selectedDate=d.date;viewDate=parseDate(d.date);
+  }
+  if(kind==="race"){
+    const obj={
+      name:d.name.trim(),date:d.date,sport:d.sport,
+      place:d.place.trim(),distance:d.distance.trim(),
+      status:d.status,goal:d.goal.trim(),url:d.url.trim()
+    };
+    if(!obj.name)return;
+    if(obj.url){
+      try{
+        const u=new URL(obj.url);
+        if(!["https:","http:"].includes(u.protocol))
+          throw new Error("Protocole invalide");
+      }catch(err){alert("Entre une URL http ou https valide.");return}
+    }
+    if(id){
+      const r=state.races.find(x=>x.id===id);
+      if(r)Object.assign(r,obj);
+    }else state.races.push({id:uid(),...obj});
+  }
+  save();closeModal();render();
+});
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-action]");
+  if(!b)return;
+  const act=b.dataset.action,id=b.dataset.id;
+  if(act==="close"){closeModal();return}
+  if(act==="tab"){tab=b.dataset.tab;render();return}
+  if(act==="tab-calendar"){tab="calendar";render();return}
+  if(act==="tab-races"){tab="races";render();return}
+  if(act==="backup"){backupModal();return}
+  if(act==="export"){exportData();return}
+  if(act==="import"){
+    document.getElementById("importFile").click();return;
+  }
+  if(act==="new-session"){sessionForm();return}
+  if(act==="edit-session"){sessionForm(id);return}
+  if(act==="new-plan"||act==="plan-session"){planForm(id);return}
+  if(act==="edit-plan"){planForm(id,true);return}
+  if(act==="new-race"){raceForm();return}
+  if(act==="edit-race"){raceForm(id);return}
+  if(act==="filter-session"){filter=id;render();return}
+  if(act==="filter-race"){raceFilter=id;render();return}
+  if(act==="calendar-mode"){calMode=id;render();return}
+  if(act==="calendar-prev"||act==="calendar-next"){
+    const delta=act==="calendar-prev"?-1:1;
+    if(calMode==="month"){
+      viewDate=new Date(viewDate.getFullYear(),viewDate.getMonth()+delta,1);
+    }else{
+      viewDate=addDays(viewDate,7*delta);
+    }
+    selectedDate=iso(calMode==="month"?
+      new Date(viewDate.getFullYear(),viewDate.getMonth(),1):
+      monday(viewDate));
+    render();return;
+  }
+  if(act==="choose-date"){
+    selectedDate=id;render();return;
+  }
+  if(act==="toggle-plan"){
+    const p=state.planned.find(x=>x.id===id);
+    if(p){p.done=!p.done;save();render()}
+    return;
+  }
+  if(act==="toggle-race"){
+    const r=state.races.find(x=>x.id===id);
+    if(r){r.status=r.status==="registered"?"wishlist":"registered";save();render()}
+    return;
+  }
+  if(act==="delete-session"){
+    if(!confirm("Supprimer cette séance de la bibliothèque ? Les séances déjà programmées seront conservées."))return;
+    state.sessions=state.sessions.filter(x=>x.id!==id);
+  }else if(act==="delete-plan"){
+    if(!confirm("Supprimer cet entraînement du calendrier ?"))return;
+    state.planned=state.planned.filter(x=>x.id!==id);
+  }else if(act==="delete-race"){
+    if(!confirm("Supprimer cette course ?"))return;
+    state.races=state.races.filter(x=>x.id!==id);
+  }else return;
+  save();render();
+});
+
+render();
+})();
+</script>
+</body>
+</html>

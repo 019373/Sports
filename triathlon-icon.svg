@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="110" fill="#0b0e13"/>
+<path d="M55 349H456" stroke="#79b0ff" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+<g fill="none" stroke="#f6f7f9" stroke-linecap="round" stroke-linejoin="round">
+<!-- swimmer -->
+<circle cx="80" cy="194" r="17" fill="#f6f7f9" stroke="none"/>
+<path d="M95 215 L133 230 L166 202 M119 218L147 182" stroke-width="18"/>
+<path d="M46 263 Q65 248 84 263 T122 263 T160 263 M46 290Q65 275 84 290 T122 290 T160 290" stroke="#79b0ff" stroke-width="11"/>
+<!-- cyclist -->
+<circle cx="206" cy="279" r="40" stroke-width="12"/>
+<circle cx="323" cy="279" r="40" stroke-width="12"/>
+<path d="M206 279L246 230L272 279L206 279M272 279L301 224L323 279M239 225h19M291 220h23" stroke-width="12"/>
+<circle cx="267" cy="176" r="16" fill="#f6f7f9" stroke="none"/>
+<path d="M256 197L230 220L268 225L293 211" stroke-width="16"/>
+<!-- runner -->
+<circle cx="414" cy="155" r="18" fill="#f6f7f9" stroke="none"/>
+<path d="M408 187L385 239L427 269 M391 219L365 226 M398 216L441 233 M427 269L451 316 M427 269L391 315" stroke-width="17"/>
+</g>
+</svg>
