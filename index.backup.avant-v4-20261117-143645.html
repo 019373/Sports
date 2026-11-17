@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0e13"><title>Triathlon | Mon entraînement</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0e13;--card:#151a22;--panel:#1d2531;--line:#2b3542;--text:#f6f7f9;--muted:#9ba8b9;--blue:#79b0ff;--green:#66d6a1;--orange:#ffbb78;--purple:#baa5ff;--red:#ff9292}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+header{position:sticky;top:0;z-index:4;background:#0b0e13f2;border-bottom:1px solid var(--line)}.head{max-width:950px;margin:auto;padding:15px 17px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:19px;letter-spacing:-.5px;font-weight:800}.brand small{display:block;font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:550;margin-bottom:2px}
+main{max-width:950px;margin:auto;padding:23px 15px 120px;min-height:70vh}h1{font-size:28px;letter-spacing:-.7px;margin:0}h2{font-size:19px;margin:0 0 12px;letter-spacing:-.3px}h3{font-size:16px;margin:0}p{line-height:1.55}.muted{color:var(--muted)}.small{font-size:13px}.tiny{font-size:11px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}.sub{font-size:14px;color:var(--muted);margin:6px 0 0}.section{margin-top:26px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.wrap{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid .card{margin:0}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;min-width:0}.stat{font-size:30px;font-weight:800;letter-spacing:-1px;margin:8px 0 0}.name{font-size:16px;font-weight:740;margin:10px 0 5px}.meta{color:var(--muted);font-size:13px;line-height:1.55}.desc{font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:9px}.tag{border-radius:7px;background:var(--panel);padding:5px 8px;font-size:11px;color:var(--muted);display:inline-flex;font-weight:650}.tag.run{color:var(--green)}.tag.bike{color:var(--blue)}.tag.swim{color:var(--purple)}.tag.brick{color:var(--orange)}.tag.good{color:var(--green)}.tag.warn{color:var(--orange)}.tag.bad{color:var(--red)}.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}.btn{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:39px}.btn.primary{color:#061525;background:var(--blue);border-color:var(--blue)}.btn.danger{color:var(--red)}.btn.on{background:var(--text);color:var(--bg)}.btn.compact{padding:7px 10px;min-height:34px;font-size:12px}.filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:14px}.filters .btn{white-space:nowrap}.empty{border:1px dashed var(--line);border-radius:14px;padding:28px 14px;text-align:center;font-size:14px;color:var(--muted);line-height:1.55}.div{height:1px;background:var(--line);margin:17px 0}details{margin-top:12px}summary{font-size:13px;color:var(--blue);cursor:pointer;font-weight:650}details[open] summary{margin-bottom:12px}.group{background:#111720;border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:9px}.gtitle{font-weight:700;font-size:13px;margin-bottom:8px}.phase{padding:8px 10px;margin:6px 0;border-left:3px solid var(--blue);background:#1c2632;border-radius:5px;font-size:13px}.phase.rest{border-color:var(--green)}.phase.transition{border-color:var(--orange)}.phase .label{font-weight:700}.phase .detail{color:var(--muted);font-size:12px;margin-top:3px;line-height:1.45}.notice{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.55}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:5;background:#111820f2;border-top:1px solid var(--line);padding:7px 3px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:space-around}nav button{border:0;background:none;color:var(--muted);font-size:11px;font-weight:650;min-width:58px;padding:10px 2px}nav button.on{color:var(--blue)}
+.calbar{display:flex;align-items:center;justify-content:space-between;gap:7px;margin:15px 0}.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}.weekday{text-align:center;padding:5px 0 9px;color:var(--muted);font-size:11px}.day{background:var(--card);border:1px solid var(--line);border-radius:9px;min-width:0;min-height:73px;padding:8px 4px;text-align:left;color:var(--text)}.day.other{opacity:.35}.day.selected{border-color:var(--blue);background:#19283b}.day.today .daynum{color:var(--blue);font-weight:800}.daynum{font-size:13px}.dots{display:flex;gap:3px;margin-top:9px;flex-wrap:wrap}.dot{width:7px;height:7px;border-radius:50%;background:var(--blue)}.dot.run{background:var(--green)}.dot.bike{background:var(--blue)}.dot.swim{background:var(--purple)}.dot.brick{background:var(--orange)}.dot.rest{background:#697788}.daynote{font-size:10px;color:var(--muted);margin-top:6px}.weekrow{width:100%;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:11px;text-align:left;padding:12px;margin:4px 0}.weekrow.selected{border-color:var(--blue)}
+dialog{width:min(95vw,550px);max-height:86vh;overflow-y:auto;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--text)}dialog::backdrop{background:#000b}.dialoghead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.dialoghead h2{margin:0}.form{display:grid;gap:13px;margin-top:15px}.field{display:grid;gap:6px}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field textarea,.field select{min-height:43px;width:100%;background:#222b37;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px;font-size:16px}.field textarea{min-height:90px;resize:vertical}.formactions{display:flex;gap:8px;justify-content:flex-end;margin-top:7px}.hint{font-size:12px;color:var(--muted);line-height:1.5}.progress{height:7px;border-radius:10px;background:var(--line);overflow:hidden}.progress>div{height:100%;background:var(--green);border-radius:10px}a{color:var(--blue);overflow-wrap:anywhere}
+@media(max-width:420px){main{padding:20px 12px 115px}h1{font-size:25px}.day{min-height:65px}.calendar{gap:3px}.card{padding:14px}.head{padding:13px 12px}.stat{font-size:27px}}
+
+/* Triathlon V3 - interface mobile et icône */
+header .brand{padding-left:48px;background:url('./triathlon-icon.svg') left center/39px 39px no-repeat;min-height:40px;display:flex;flex-direction:column;justify-content:center}
+nav button{min-height:51px;touch-action:manipulation}nav{backdrop-filter:blur(12px)}
+.filters{scrollbar-width:none;-webkit-overflow-scrolling:touch}.filters::-webkit-scrollbar{display:none}
+.actions .btn{touch-action:manipulation}
+.weekstat{padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.weekstat:last-child{border:0}
+.checkline{display:flex;gap:10px;align-items:center;padding:12px 4px;font-size:14px;border-bottom:1px solid var(--line)}
+.checkline input{width:19px;height:19px;accent-color:var(--blue)}
+.recordrow{padding:12px 0;border-bottom:1px solid var(--line)}
+.builder-block .grid{margin:10px 0}
+@media(max-width:430px){
+ .head{padding:10px 12px}.head .brand{font-size:16px;padding-left:42px;background-size:34px 34px}
+ nav button{font-size:11px;min-width:0;flex:1}
+ .top{align-items:flex-start}.btn{min-height:42px}
+ .actions{gap:6px}.actions .btn{padding:9px 11px}
+ dialog{width:100vw;max-width:100vw;max-height:94dvh;border-radius:18px 18px 0 0;margin:auto 0 0;padding:18px 14px calc(20px + env(safe-area-inset-bottom))}
+ .group{padding:10px}.builder-block .grid{gap:9px}
+}
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./triathlon-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./triathlon-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head><body>
+<header><div class="head"><div class="brand"><small>MON ESPACE SPORT</small>TRIATHLON</div><button class="btn compact" data-a="backup">Sauvegarde</button></div></header>
+<main id="main"></main>
+<nav aria-label="Navigation principale"><button data-a="tab" data-tab="home">Accueil</button><button data-a="tab" data-tab="library">Séances</button><button data-a="tab" data-tab="calendar">Calendrier</button><button data-a="tab" data-tab="races">Courses</button><button data-a="tab" data-tab="settings">Réglages</button></nav>
+<dialog id="modal"><div class="dialoghead"><h2 id="mtitle"></h2><button class="btn compact" data-a="close" aria-label="Fermer">Fermer</button></div><div id="mbody"></div></dialog>
+<input type="file" id="file" accept=".json,application/json" hidden>
+<script>
+(()=>{'use strict';
+const KEY='triathlon-perso-v1',FORMAT=2;
+const NAMES={run:'Course à pied',bike:'Vélo',swim:'Natation',brick:'Enchaînement'};
+const CATS={endurance:'Endurance',tempo:'Tempo',seuil:'Seuil',vma:'VMA',vo2:'PMA / VO2 max',sprint:'Sprint',specifique:'Allure spécifique',lactique:'Lactique',autre:'Autre'};
+const RSPORT={run:'Course à pied',bike:'Cyclisme',swim:'Natation',brick:'Triathlon',other:'Autre'};
+const RSTATUS={wishlist:'Envisagée',registered:'Inscrite',completed:'Terminée',cancelled:'Annulée'};
+const WD=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const r=(label,detail='',target=null,kind='work')=>({label,detail,target,kind});
+const g=(title,reps,parts,extra='',rounds=1)=>({title,reps,parts,extra,rounds});
+const s=(id,sport,cat,name,description,steps,extra={})=>({id:'src-'+id,sport,category:cat,name,description,steps,source:'Séance issue des fichiers fournis',minutes:0,goal:'',...extra});
+const SEEDS=[
+ s('bike-z2','bike','endurance','Z2 · Sortie endurance','Sortie de 4 à 6 h, environ 80 à 120 km, en endurance fondamentale.',[g('Sortie longue',1,[r('Endurance Z2','4 à 6 h · 80 à 120 km')])]),
+ s('bike-z3-force','bike','tempo','Z3 · Force sous-maximale','Pédalage efficace, forte résistance et faible cadence. Les contre-efforts sont en vélocité.',[g('Force sous-maximale',6,[r('Effort','3 min · Z3 · 55 tr/min',{metric:'pma',lo:65,hi:75}),r('Contre-effort','2 min · Z2 · au moins 100 tr/min',{metric:'pma',lo:50},'rest')],'6 répétitions consécutives')]),
+ s('bike-z4-pma','bike','seuil','Z4 · Intervalles au seuil (PMA)','Intervalles au seuil, avec maintien d’un effort prolongé.',[g('Seuil',4,[r('Effort','5 min · Z4',{metric:'pma',lo:75,hi:80}),r('Récupération','5 min · Z2',{metric:'pma',lo:50},'rest')])]),
+ s('bike-z4-fc','bike','seuil','Z4 · Intervalles au seuil (FC)','Chercher une fréquence cardiaque stable en zone 4 pendant les efforts.',[g('Seuil cardiaque',4,[r('Effort','6 min · Z4',{metric:'fcmax',lo:92,hi:96})],'10 min en Z1–Z2 entre les efforts, pas après le dernier')]),
+ s('bike-over-under','bike','seuil','Over/Under · FTP','Séance sur home trainer ou côte régulière. De 3 à 4 séries de cinq alternances.',[g('Over/Under',5,[r('Over','1 min',{metric:'ftp',lo:110}),r('Under','1 min',{metric:'ftp',lo:90})],'3 min en Z1–Z2 ENTRE les séries',3)],{goal:'3 séries au départ ; possibilité de passer à 4'}),
+ s('bike-ftp-haut','bike','seuil','Fractionné seuil haut · FTP','Avec capteur de puissance ou home trainer. Commencer par 3 répétitions, passer ensuite à 4.',[g('Fractionné haut',3,[r('Effort','6 min',{metric:'ftp',lo:110}),r('Récupération','6 min · Z1–Z2',null,'rest')],'3 répétitions, puis éventuellement 4')]),
+ s('bike-pma-3015','bike','vo2','PMA · 3 × 10 × (30/15)','Fractionné court conçu pour maintenir un effort intense avec récupération brève.',[g('PMA 30/15',10,[r('Effort','30 secondes · Z5',{metric:'pma',lo:100}),r('Contre-effort','15 secondes · Z2',{metric:'pma',lo:50},'rest')],'3 min de récupération ENTRE les séries',3)]),
+ s('bike-gimenez','bike','vo2','PMA · Gimenez','Séance intense nécessitant une progression préalable.',[g('Gimenez',9,[r('Effort','1 min · Z5',{metric:'pma',lo:100}),r('Contre-effort','4 min · Z3',{metric:'pma',lo:65,hi:75},'rest')])]),
+ s('bike-mix','bike','vo2','PMA · Efforts mixtes','Séance alternant PMA et seuil haut pour simuler les changements de rythme.',[g('Efforts mixtes',3,[r('PMA','1 min · Z5',{metric:'pma',lo:100}),r('Seuil','2 min · Z4',{metric:'pma',lo:80}),r('Récupération','3 min · Z2',{metric:'pma',lo:50},'rest')])]),
+ s('bike-sprint-assis','bike','sprint','Sprint assis · Hypervélocité','Assis, petit plateau, cadence maximale. Récupération complète et longue. Le nombre de répétitions n’est pas précisé.',[g('Sprint',1,[r('Effort','8 à 12 secondes · intensité maximale · assis sur la selle'),r('Récupération','Complète et longue, sans durée précisée',null,'rest')])]),
+ s('bike-sprint-danseuse','bike','sprint','Sprint lancé · Danseuse','Départ lancé, petit plateau, haute cadence. Récupération complète et longue. Nombre de répétitions non précisé.',[g('Sprint',1,[r('Effort','10 à 20 secondes · intensité maximale · en danseuse'),r('Récupération','Complète et longue, sans durée précisée',null,'rest')])]),
+ s('bike-sprint-force','bike','sprint','Sprint en force explosive','Grand plateau, gros braquet, départ arrêté ou vers 15 km/h, accélération forte. Nombre de répétitions non précisé.',[g('Sprint',1,[r('Effort','8 à 12 secondes · intensité maximale'),r('Récupération','Complète et longue, sans durée précisée',null,'rest')])]),
+ s('bike-sprint-long','bike','sprint','Sprint long · Tolérance aux lactates','Grand plateau, intensité maximale ou quasi maximale. Nombre de répétitions non précisé.',[g('Sprint long',1,[r('Effort','25 à 30 secondes · maximal / quasi maximal'),r('Récupération','Au moins 2 min ; idéalement assez longue pour conserver la puissance',null,'rest')])]),
+ s('run-2k-400','run','vma','Objectif 2 km · 10 × 400 m','Objectif source : moins de 6 min sur 2 km. Les allures ne sont pas automatiquement adaptées au 3 km.',[g('VMA',10,[r('400 m','1 min 09 à 1 min 10'),r('Récupération','1 min de trottinement très lent',null,'rest')])],{goal:'Sub 6 min au 2 km'}),
+ s('run-2k-600','run','vma','Objectif 2 km · 6 × 600 m','Séance VMA du programme pour le 2 km.',[g('VMA',6,[r('600 m','1 min 45 à 1 min 47'),r('Récupération','1 min 30 à 1 min 45, passive ou trottée',null,'rest')])],{goal:'Sub 6 min au 2 km'}),
+ s('run-2k-500','run','specifique','Objectif 2 km · 5 × 500 m','Séance brisée de capacité lactique à allure spécifique.',[g('Allure spécifique',5,[r('500 m','1 min 29'),r('Récupération','2 min passive',null,'rest')])],{goal:'Sub 6 min au 2 km'}),
+ s('run-2k-pyramide','run','specifique','Objectif 2 km · Pyramide','Chaque fraction est courue à l’allure cible ou un peu plus vite.',[g('Pyramide',1,[r('800 m','2 min 23'),r('Récupération','3 min',null,'rest'),r('600 m','1 min 47'),r('Récupération','2 min 30',null,'rest'),r('400 m','1 min 11'),r('Récupération','2 min',null,'rest'),r('200 m','33 secondes')])],{goal:'Sub 6 min au 2 km'}),
+ s('run-2k-300200','run','lactique','Objectif 2 km · 3 × (300 + 200 m)','Travail de sur-vitesse et de tolérance lactique.',[g('300 + 200',3,[r('300 m','48 secondes'),r('Récupération','45 secondes',null,'rest'),r('200 m','30 secondes')],'4 à 5 min entre les blocs')],{goal:'Sub 6 min au 2 km'}),
+ s('10k-i-1','run','vma','10 km · 10 × 400 m','Programme sub 45 min · semaines 1 à 3.',[g('Fractionné',10,[r('400 m','3:55/km'),r('Récupération','1 min 15',null,'rest')])],{programSlot:'interval',programPhase:0}),
+ s('10k-i-2','run','vma','10 km · 5 × 1 000 m','Programme sub 45 min · semaines 4 à 6.',[g('Fractionné',5,[r('1 000 m','4:00/km'),r('Récupération','1 min 30',null,'rest')])],{programSlot:'interval',programPhase:1}),
+ s('10k-i-3','run','vma','10 km · 6 × 800 m','Programme sub 45 min · semaines 7 à 9. Le fichier ne précise pas la récupération.',[g('Fractionné',6,[r('800 m','3:50/km'),r('Récupération','Non précisée dans le fichier',null,'rest')])],{programSlot:'interval',programPhase:2}),
+ s('10k-i-4','run','vma','10 km · 4 × 400 m (semaine de course)','Programme sub 45 min · semaine 10. Récupération longue, durée non précisée.',[g('Fractionné',4,[r('400 m','Allure cible 10 km',{metric:'pace10k'}),r('Récupération','Longue, durée non précisée',null,'rest')])],{programSlot:'interval',programPhase:3}),
+ s('10k-t-1','run','tempo','10 km · 2 × 10 min tempo','Programme sub 45 min · semaines 1 à 3.',[g('Tempo',2,[r('Effort','10 min à 4:45/km')],'Récupération non précisée dans le fichier')],{programSlot:'tempo',programPhase:0}),
+ s('10k-t-2','run','tempo','10 km · 3 × 2 km tempo','Programme sub 45 min · semaines 4 à 6.',[g('Tempo',3,[r('2 km','4:30/km'),r('Récupération','2 min',null,'rest')])],{programSlot:'tempo',programPhase:1}),
+ s('10k-t-3','run','tempo','10 km · 2 × 3 km tempo','Programme sub 45 min · semaines 7 à 9.',[g('Tempo',2,[r('3 km','4:28/km'),r('Récupération','2 min 30',null,'rest')])],{programSlot:'tempo',programPhase:2}),
+ s('10k-t-4','run','tempo','10 km · 2 × 3 km (semaine de course)','Programme sub 45 min · semaine 10. Séance reprise telle quelle depuis le fichier.',[g('Tempo',2,[r('3 km','4:28/km'),r('Récupération','2 min 30',null,'rest')])],{programSlot:'tempo',programPhase:3}),
+ s('10k-l-1','run','endurance','10 km · 12 à 14 km endurance','Programme sub 45 min · semaines 1 à 3.',[g('Sortie longue',1,[r('Endurance fondamentale','12 à 14 km')])],{programSlot:'long',programPhase:0}),
+ s('10k-l-2','run','endurance','10 km · 14 à 16 km progressif','Programme sub 45 min · semaines 4 à 6.',[g('Sortie longue',1,[r('Endurance fondamentale','14 à 16 km au total'),r('Fin plus rapide','3 derniers km à 5:00/km')])],{programSlot:'long',programPhase:1}),
+ s('10k-l-3','run','endurance','10 km · 12 km dont 4 km cible','Programme sub 45 min · semaines 7 à 9.',[g('Sortie longue',1,[r('Première partie','8 km en endurance'),r('Fin à allure cible','4 derniers km',{metric:'pace10k'})])],{programSlot:'long',programPhase:2}),
+ s('10k-l-4','run','endurance','10 km · Footing pré-course','Programme sub 45 min · semaine 10.',[g('Footing léger',1,[r('Footing','20 min léger'),r('Accélérations','3 accélérations · durée non précisée')])],{programSlot:'long',programPhase:3})
+];
+const PROGRAM={title:'10 km · Objectif moins de 45 min',slots:{interval:['src-10k-i-1','src-10k-i-2','src-10k-i-3','src-10k-i-4'],tempo:['src-10k-t-1','src-10k-t-2','src-10k-t-3','src-10k-t-4'],long:['src-10k-l-1','src-10k-l-2','src-10k-l-3','src-10k-l-4']}};
+const blank=()=>({sessions:[],planned:[],races:[],programs:[],restDays:[],settings:{ftp:'',pma:'',fcmax:'',pace10k:'',pace2k:''},seedVersion:0,schemaVersion:FORMAT});
+const isObj=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+const uid=()=>typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
+const escapeHTML=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parseDay=x=>new Date(x+'T12:00:00');
+const plusDays=(d,n)=>{let t=new Date(d);t.setDate(t.getDate()+n);return t};
+const monday=d=>plusDays(d,-((d.getDay()+6)%7));
+const validDay=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&!isNaN(parseDay(x).valueOf())&&iso(parseDay(x))===x;
+const dayLabel=x=>validDay(x)?parseDay(x).toLocaleDateString('fr-CH',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):'Date inconnue';
+const monthLabel=d=>d.toLocaleDateString('fr-CH',{month:'long',year:'numeric'});
+const dayDiff=(a,b)=>Math.round((parseDay(b)-parseDay(a))/86400000);
+const sortPlanned=a=>[...a].sort((x,y)=>(x.date+' '+(x.time||'')).localeCompare(y.date+' '+(y.time||'')));
+const sortRaces=a=>[...a].sort((x,y)=>(x.date||'9999').localeCompare(y.date||'9999'));
+function normalize(raw){
+ if(!isObj(raw)||!['sessions','planned','races'].every(k=>Array.isArray(raw[k])&&raw[k].length<=10000))throw Error('Fichier invalide : listes manquantes ou trop longues.');
+ if(!['sessions','planned','races'].every(k=>raw[k].every(isObj)))throw Error('Entrée invalide dans une liste.');
+ const x=blank();
+ x.sessions=raw.sessions.map(v=>({...v,id:String(v.id||uid()),name:String(v.name||'Séance'),sport:NAMES[v.sport]?v.sport:'run',category:CATS[v.category]?v.category:'autre',steps:Array.isArray(v.steps)?v.steps:[]}));
+ x.planned=raw.planned.filter(v=>validDay(v.date)).map(v=>({...v,id:String(v.id||uid()),sport:NAMES[v.sport]?v.sport:'run',category:CATS[v.category]?v.category:'autre',name:String(v.name||'Entraînement'),steps:Array.isArray(v.steps)?v.steps:[],done:!!v.done}));
+ x.races=raw.races.map(v=>({...v,id:String(v.id||uid()),name:String(v.name||'Course'),status:RSTATUS[v.status]?v.status:'wishlist'}));
+ x.programs=Array.isArray(raw.programs)?raw.programs.filter(isObj).map(v=>({...v,id:String(v.id||uid())})):[];
+ x.restDays=Array.isArray(raw.restDays)?[...new Set(raw.restDays.filter(validDay))]:[];
+ x.settings=isObj(raw.settings)?{...x.settings,...raw.settings}:x.settings;
+ x.seedVersion=Number(raw.seedVersion)||0;
+ x.schemaVersion=FORMAT;
+ return x;
+}
+function seed(x){if(x.seedVersion>=1)return;
+ for(const template of SEEDS){if(!x.sessions.some(v=>v.id===template.id||(v.sport===template.sport&&v.name===template.name)))x.sessions.push(JSON.parse(JSON.stringify(template)))}
+ x.seedVersion=1;
+}
+function getSaved(){try{const raw=localStorage.getItem(KEY);if(raw)return normalize(JSON.parse(raw))}catch(e){alert('La sauvegarde locale ne peut pas être lue : '+e.message)}return blank()}
+let data=getSaved();seed(data);
+let tab='home',libTab='library',sportFilter='all',catFilter='all',raceFilter='all',calMode='month',viewDate=new Date(),selectedDate=iso(new Date());
+let stagedImport=null;
+const main=document.getElementById('main'),modal=document.getElementById('modal');
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));return true}catch(e){alert('Enregistrement impossible. Espace de stockage indisponible ou saturé.');return false}}
+save();
+function tag(t,cls=''){return `<span class="tag ${cls}">${escapeHTML(t)}</span>`}
+function btn(t,a,id='',cls=''){return `<button class="btn ${cls}" data-a="${a}" data-id="${escapeHTML(id)}">${t}</button>`}
+function top(title,desc,right=''){return `<div class="top"><div><h1>${title}</h1><p class="sub">${desc}</p></div>${right}</div>`}
+function empty(t){return `<div class="empty">${escapeHTML(t)}</div>`}
+function tabs(selected,entries,action){return `<div class="filters">${entries.map(([k,v])=>btn(v,action,k,selected===k?'on':'')).join('')}</div>`}
+function numSetting(k){const n=Number(data.settings[k]);return Number.isFinite(n)&&n>0?n:null}
+function parsePace(x){if(typeof x!=='string'||!/^\d{1,2}:\d{2}$/.test(x))return null;const [m,s]=x.split(':').map(Number);return s<60&&m>0?m*60+s:null}
+function targetText(target){if(!isObj(target))return '';
+ if(target.metric==='pace10k'||target.metric==='pace2k'){
+  const p=data.settings[target.metric],s=parsePace(p);
+  return s?`Allure personnelle : ${p}/km (${(3600/s).toFixed(1)} km/h)`:'Régler ton allure de référence dans Réglages';
+ }
+ const metric=target.metric;const n=numSetting(metric);const label=metric==='fcmax'?'FC max':metric==='ftp'?'FTP':'PMA';
+ if(!['pma','ftp','fcmax'].includes(metric))return '';
+ const pct=target.hi&&target.hi!==target.lo?`${target.lo}–${target.hi} %`:`${target.lo} %`;
+ if(!n)return `${pct} ${label} · renseigner ${label} dans Réglages`;
+ const lo=Math.round(n*Number(target.lo)/100),hi=target.hi?Math.round(n*Number(target.hi)/100):null;
+ return `${pct} ${label} = ${lo}${hi&&hi!==lo?'–'+hi:''} ${metric==='fcmax'?'bpm':'W'}`;
+}
+function structured(steps){if(!Array.isArray(steps)||!steps.length)return '';
+ return `<details><summary>Voir la séance étape par étape</summary>${steps.map(block=>{
+  if(!isObj(block))return '';
+  const rounds=Number(block.rounds)||1,reps=Number(block.reps)||1;
+  const repTitle=(rounds>1?rounds+' séries × ':'')+(reps>1?reps+' répétitions':'1 bloc');
+  return `<div class="group"><div class="gtitle">${escapeHTML(block.title||'Séquence')} · ${repTitle}</div>
+   ${Array.isArray(block.parts)?block.parts.filter(isObj).map(p=>`<div class="phase ${p.kind==='rest'?'rest':p.kind==='transition'?'transition':''}"><div class="label">${escapeHTML(p.label)}</div><div class="detail">${escapeHTML(p.detail)}${p.target?'<br>'+escapeHTML(targetText(p.target)):''}</div></div>`).join(''):''}
+   ${block.extra?`<div class="notice">${escapeHTML(block.extra)}</div>`:''}</div>`;
+ }).join('')}</details>`;
+}
+function sessionCard(s){return `<article class="card"><div class="row"><div class="wrap">${tag(NAMES[s.sport]||'Sport',s.sport)}${tag(CATS[s.category]||'Autre')}</div>${s.programPhase!==undefined?tag('Programme 10 km'):''}</div>
+ <div class="name">${escapeHTML(s.name)}</div>${s.minutes?`<div class="meta">${escapeHTML(s.minutes)} min</div>`:''}
+ ${s.goal?`<div class="meta">Objectif : ${escapeHTML(s.goal)}</div>`:''}
+ ${s.description?`<div class="desc">${escapeHTML(s.description)}</div>`:''}${structured(s.steps)}
+ <div class="actions">${btn('Programmer','plan-from',s.id,'primary compact')}${btn('Modifier','session-edit',s.id,'compact')}${btn('Supprimer','session-del',s.id,'danger compact')}</div></article>`}
+function planCard(p){return `<article class="card"><div class="row"><div class="wrap">${tag(NAMES[p.sport]||'Sport',p.sport)}${tag(CATS[p.category]||'Autre')}</div>${tag(p.done?'Terminée':'À faire',p.done?'good':'warn')}</div>
+ <div class="name">${escapeHTML(p.name)}</div><div class="meta">${escapeHTML(dayLabel(p.date))}${p.time?' · '+escapeHTML(p.time):''}${p.minutes?' · '+escapeHTML(p.minutes)+' min':''}</div>
+ ${p.programId?`<div class="meta">Programme : ${escapeHTML((data.programs.find(q=>q.id===p.programId)||{}).title||'Plan lié')}</div>`:''}
+ ${p.goal?`<div class="meta">Objectif : ${escapeHTML(p.goal)}</div>`:''}${p.description?`<div class="desc">${escapeHTML(p.description)}</div>`:''}${structured(p.steps)}
+ <div class="actions">${btn(p.done?'Remettre à faire':'Terminer','plan-done',p.id,'compact')}${btn('Déplacer / modifier','plan-edit',p.id,'compact')}${btn('Dupliquer / répéter','plan-duplicate',p.id,'compact')}${btn('Supprimer','plan-del',p.id,'danger compact')}</div></article>`}
+function upcomingRace(){const today=iso(new Date());return sortRaces(data.races.filter(r=>validDay(r.date)&&r.date>=today&&['wishlist','registered'].includes(r.status)))[0]}
+function renderHome(){const today=iso(new Date()),m=iso(monday(new Date())),end=iso(plusDays(monday(new Date()),6));
+ const week=data.planned.filter(p=>p.date>=m&&p.date<=end),next=sortPlanned(data.planned.filter(p=>p.date>=today&&!p.done)).slice(0,3),race=upcomingRace();
+ return top('Mon entraînement','Entraînements et compétitions au même endroit.')+`<div class="grid"><div class="card"><div class="meta">Séances cette semaine</div><div class="stat">${week.length}</div></div><div class="card"><div class="meta">Terminées cette semaine</div><div class="stat">${week.filter(p=>p.done).length}</div><div class="progress" aria-label="Progression de la semaine"><div style="width:${week.length?100*week.filter(p=>p.done).length/week.length:0}%"></div></div></div></div>
+ <div class="section"><div class="row"><h2>À venir</h2>${btn('Calendrier','tab-calendar','','compact')}</div>${next.length?next.map(planCard).join(''):empty('Aucun entraînement programmé.')}</div>
+ <div class="section"><h2>Prochaine course</h2>${race?`${raceCard(race)}<p class="muted small">Départ dans ${dayDiff(today,race.date)} jour(s).</p>`:empty('Aucune course future enregistrée.')}</div>`}
+function renderLibrary(){if(libTab==='programs')return renderPrograms();
+ const list=data.sessions.filter(s=>(sportFilter==='all'||s.sport===sportFilter)&&(catFilter==='all'||s.category===catFilter));
+ return top('Mes séances','Bibliothèque : tes séances restent disponibles pour plusieurs entraînements.',btn('+ Ajouter','session-new','','primary'))+
+ tabs(libTab,[['library','Bibliothèque'],['programs','Programmes']],'lib-mode')+
+ tabs(sportFilter,[['all','Tous sports'],['run','Course à pied'],['bike','Vélo'],['swim','Natation'],['brick','Combiné']],'sport-filter')+
+ `<div class="field" style="margin-bottom:14px"><label for="category">Filtrer par objectif</label><select id="category" data-change="category"><option value="all">Tous les objectifs</option>${Object.entries(CATS).map(([k,v])=>`<option value="${k}" ${catFilter===k?'selected':''}>${escapeHTML(v)}</option>`).join('')}</select></div>`+
+ `<p class="muted small">${list.length} séance(s) · Les modèles importés ne sont ajoutés qu'une fois.</p>`+
+ (list.length?list.map(sessionCard).join(''):empty('Aucune séance pour ces filtres.'))}
+function renderPrograms(){const active=[...data.programs].sort((a,b)=>(b.startDate||'').localeCompare(a.startDate||''));
+ return top('Programmes','Planification sur plusieurs semaines.')+
+ tabs(libTab,[['library','Bibliothèque'],['programs','Programmes']],'lib-mode')+
+ `<div class="card"><div class="row"><div><h3>10 km · Objectif moins de 45 min</h3><p class="muted small">10 semaines · 3 séances par semaine · 30 entraînements.</p></div>${tag('10 semaines')}</div>
+ <p class="small">Les semaines 1–3, 4–6 et 7–9 reprennent les séances de ton fichier. La semaine 10 conserve les séances prévues dans le fichier, même si leur charge devra être adaptée à ta course.</p>
+ <div class="notice">Mardi : fractionné · Jeudi : tempo · Samedi : sortie longue / footing. Ces jours sont modifiables avant de programmer.</div>
+ <div class="actions">${btn('Programmer les 10 semaines','program-new','','primary')}</div></div>
+ <div class="section"><h2>Mes plans programmés</h2>${active.length?active.map(p=>{
+  const sessions=data.planned.filter(x=>x.programId===p.id),done=sessions.filter(x=>x.done).length,race=data.races.find(r=>r.id===p.raceId);
+  return `<div class="card"><div class="row"><h3>${escapeHTML(p.title||PROGRAM.title)}</h3>${tag(done+'/'+sessions.length+' terminées','good')}</div>
+   <div class="meta">Début : ${escapeHTML(dayLabel(p.startDate))} · Fin : ${escapeHTML(dayLabel(iso(plusDays(parseDay(p.startDate),69))))}</div>
+   <div class="meta">Course associée : ${race?escapeHTML(race.name):'Aucune'}</div>
+   <div class="actions">${btn('Associer une course','program-link',p.id,'compact')}${btn('Voir dans calendrier','program-calendar',p.id,'compact')}${btn('Supprimer le programme','program-del',p.id,'danger compact')}</div></div>`;
+ }).join(''):empty('Aucun programme de plusieurs semaines encore planifié.')}</div>`}
+function renderCalendar(){let dates=[];const first=calMode==='month'?new Date(viewDate.getFullYear(),viewDate.getMonth(),1):monday(viewDate),start=monday(first);
+ for(let i=0;i<(calMode==='month'?42:7);i++)dates.push(plusDays(start,i));
+ const title=calMode==='month'?monthLabel(viewDate):dayLabel(iso(dates[0]))+' au '+dayLabel(iso(dates[6]));
+ let view='';
+ const dayMeta=d=>{const key=iso(d);return {items:data.planned.filter(p=>p.date===key),rest:data.restDays.includes(key)}};
+ if(calMode==='month')view=`<div class="calendar">${WD.map(x=>`<div class="weekday">${x}</div>`).join('')}${dates.map(d=>{
+  const key=iso(d),{items,rest}=dayMeta(d);return `<button class="day ${d.getMonth()!==viewDate.getMonth()?'other':''} ${key===selectedDate?'selected':''} ${key===iso(new Date())?'today':''}" data-a="day" data-id="${key}"><span class="daynum">${d.getDate()}</span><div class="dots">${items.slice(0,5).map(p=>`<span class="dot ${p.sport}"></span>`).join('')}${rest?'<span class="dot rest"></span>':''}</div>${rest?'<div class="daynote">Repos</div>':''}</button>`
+ }).join('')}</div>`;
+ else view=dates.map(d=>{const key=iso(d),{items,rest}=dayMeta(d);return `<button class="weekrow ${key===selectedDate?'selected':''}" data-a="day" data-id="${key}"><div class="row"><strong>${escapeHTML(dayLabel(key))}</strong>${tag(rest?'Repos':items.length+' séance(s)')}</div><div class="wrap" style="margin-top:6px">${items.map(p=>tag(p.name,p.sport)).join('')}</div></button>`}).join('');
+ const selected=sortPlanned(data.planned.filter(p=>p.date===selectedDate)),rest=data.restDays.includes(selectedDate);
+ return top('Calendrier','Vue mois et semaine. Sélectionne un jour pour le modifier.')+
+ tabs(calMode,[['month','Mois'],['week','Semaine']],'cal-mode')+
+ `<div class="calbar">${btn('‹','cal-prev','','compact')}<strong class="small" style="text-align:center">${escapeHTML(title)}</strong>${btn('›','cal-next','','compact')}</div>${view}
+ <div class="section"><div class="top"><div><h2 style="margin:0">${escapeHTML(dayLabel(selectedDate))}</h2><p class="sub">${selected.length} séance(s) ${rest?'· Repos':''}</p></div><div class="wrap">${btn(rest?'Retirer repos':'Marquer repos','rest-toggle','','compact')}${btn('+ Programmer','plan-new','','primary compact')}</div></div>
+ ${rest?'<p class="muted small">Jour de récupération indiqué manuellement.</p>':''}
+ ${selected.length?selected.map(planCard).join(''):empty('Aucun entraînement ce jour.')}</div>`}
+function raceCard(x){const linked=data.programs.filter(p=>p.raceId===x.id);
+ const url=safeUrl(x.url);
+ return `<article class="card"><div class="row"><div class="wrap">${tag(RSPORT[x.sport]||'Sport')}${tag(RSTATUS[x.status]||'Envisagée',x.status==='registered'||x.status==='completed'?'good':x.status==='cancelled'?'bad':'warn')}</div>${validDay(x.date)&&x.date>=iso(new Date())?tag('J-'+dayDiff(iso(new Date()),x.date)):''}</div>
+ <div class="name">${escapeHTML(x.name)}</div><div class="meta">${escapeHTML(dayLabel(x.date))}${x.place?' · '+escapeHTML(x.place):''}${x.distance?' · '+escapeHTML(x.distance):''}</div>
+ ${x.goal?`<div class="desc">Objectif : ${escapeHTML(x.goal)}</div>`:''}
+ ${linked.length?`<div class="meta">Programme lié : ${escapeHTML(linked.map(p=>p.title).join(', '))}</div>`:''}
+ ${x.resultTime?`<div class="meta">Chrono : ${escapeHTML(x.resultTime)}</div>`:''}${x.rank?`<div class="meta">Classement : ${escapeHTML(x.rank)}</div>`:''}
+ ${x.notes?`<div class="desc">${escapeHTML(x.notes)}</div>`:''}${url?`<p class="small"><a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">Lien de la course</a></p>`:''}
+ <div class="actions">${x.status==='wishlist'?btn('Je suis inscrit','race-register',x.id,'compact'):''}${btn('Modifier','race-edit',x.id,'compact')}${btn('Supprimer','race-del',x.id,'danger compact')}</div></article>`}
+function safeUrl(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch(e){return ''}}
+function renderRaces(){const list=sortRaces(data.races.filter(x=>raceFilter==='all'||x.status===raceFilter));
+ return top('Mes courses','Inscriptions, objectifs et résultats.',btn('+ Ajouter','race-new','','primary'))+
+ tabs(raceFilter,[['all','Toutes'],...Object.entries(RSTATUS)],'race-filter')+
+ (list.length?list.map(raceCard).join(''):empty('Aucune compétition dans cette catégorie.'))}
+function renderSettings(){const s=data.settings;
+ const p10=parsePace(s.pace10k),p2=parsePace(s.pace2k);
+ return top('Réglages','Paramètres sportifs et conservation des données.')+
+ `<form class="card form" data-form="settings"><h2>Mes références</h2>
+ <p class="muted small" style="margin:0">Les puissances et fréquences cardiaques calculées sont des cibles indicatives, basées sur les paramètres que tu renseignes.</p>
+ ${field('FTP vélo (watts)','ftp',s.ftp,'number')}${field('PMA vélo (watts)','pma',s.pma,'number')}${field('Fréquence cardiaque maximale (bpm)','fcmax',s.fcmax,'number')}${field('Allure cible 10 km (min:sec/km)','pace10k',s.pace10k,'text','', '4:30')}${field('Allure cible 2 km (min:sec/km)','pace2k',s.pace2k,'text','', '2:59')}
+ ${p10?`<div class="meta">10 km : ${(3600/p10).toFixed(2)} km/h</div>`:''}${p2?`<div class="meta">2 km : ${(3600/p2).toFixed(2)} km/h</div>`:''}
+ <div class="formactions"><button class="btn primary" type="submit">Enregistrer</button></div></form>
+ <div class="card"><h2>Sauvegardes</h2><p class="muted small">Données uniquement sur cet appareil. Exporter régulièrement un JSON, notamment avant toute mise à jour ou suppression du navigateur.</p><div class="actions">${btn('Exporter','export','','primary')}${btn('Importer / fusionner','import')}</div></div>
+ <div class="card"><h2>À propos du stockage</h2><p class="muted small">Clé de stockage conservée : <code>${KEY}</code>. L'application reste utilisable sur GitHub Pages sans serveur. Les données ne se synchronisent pas entre navigateurs ou appareils.</p><div class="meta">${data.sessions.length} séances · ${data.planned.length} dates programmées · ${data.races.length} courses</div></div>`}
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));main.innerHTML={home:renderHome,library:renderLibrary,calendar:renderCalendar,races:renderRaces,settings:renderSettings}[tab]();}
+const f=(label,name,value='',type='text',required='',placeholder='')=>`<div class="field"><label for="f-${name}">${escapeHTML(label)}</label><input id="f-${name}" name="${name}" type="${type}" value="${escapeHTML(value)}" ${required?'required':''} ${type==='number'?'min="0" step="1"':''} placeholder="${escapeHTML(placeholder)}"></div>`;
+function field(label,name,value='',type='text',required='',placeholder=''){return f(label,name,value,type,required,placeholder)}
+const txt=(label,name,value='')=>`<div class="field"><label for="f-${name}">${escapeHTML(label)}</label><textarea id="f-${name}" name="${name}">${escapeHTML(value)}</textarea></div>`;
+const sel=(label,name,options,value)=>`<div class="field"><label for="f-${name}">${escapeHTML(label)}</label><select id="f-${name}" name="${name}">${options.map(([k,v])=>`<option value="${escapeHTML(k)}" ${k===value?'selected':''}>${escapeHTML(v)}</option>`).join('')}</select></div>`;
+const endForm=(label='Enregistrer')=>`<div class="formactions"><button class="btn" type="button" data-a="close">Annuler</button><button class="btn primary" type="submit">${label}</button></div>`;
+function show(title,body){document.getElementById('mtitle').textContent=title;document.getElementById('mbody').innerHTML=body;if(!modal.open)modal.showModal()}
+function close(){if(modal.open)modal.close()}
+function sessionForm(id){const x=data.sessions.find(q=>q.id===id)||{},brick=x.brick||{};
+ show(id?'Modifier la séance':'Nouvelle séance',`<form class="form" data-form="session" data-id="${escapeHTML(id||'')}">
+ ${field('Nom *','name',x.name,'text',true)}${sel('Discipline','sport',Object.entries(NAMES),x.sport||'run')}${sel('Objectif','category',Object.entries(CATS),x.category||'endurance')}
+ ${field('Durée totale en minutes (facultatif)','minutes',x.minutes||'','number')}${field('Objectif / cible','goal',x.goal)}${txt('Description','description',x.description)}
+ <p class="hint">Pour une séance personnalisée, écris une étape par ligne. Les séances importées conservent leurs blocs existants tant que ce champ reste vide.</p>
+ ${txt('Étapes personnalisées (une par ligne)','customStepsText',x.customStepsText||'')}
+ <div class="div"></div><h3>Enchaînement vélo + course</h3><p class="hint">Ces champs ne sont utilisés que si la discipline est « Enchaînement ».</p>
+ ${field('Vélo (minutes)','bikeMinutes',brick.bikeMinutes||'','number')}${field('Transition (minutes)','transitionMinutes',brick.transitionMinutes||'','number')}${field('Course à pied (minutes)','runMinutes',brick.runMinutes||'','number')}
+ ${field('Consignes vélo','bikeGoal',brick.bikeGoal||'')}${field('Consignes course','runGoal',brick.runGoal||'')}${endForm()}</form>`)}
+function planForm(sourceId,editId,duplicateId){const p=data.planned.find(q=>q.id===(editId||duplicateId));
+ if(editId&&p){show('Modifier / déplacer une séance',`<form class="form" data-form="plan-edit" data-id="${escapeHTML(editId)}">
+ ${field('Nom *','name',p.name,'text',true)}${field('Date *','date',p.date,'date',true)}${field('Heure','time',p.time||'','time')}${field('Durée en minutes','minutes',p.minutes||'','number')}${field('Objectif','goal',p.goal||'')}${txt('Description','description',p.description||'')}${endForm()}</form>`);return}
+ let options=data.sessions.map(s=>[s.id,NAMES[s.sport]+' · '+s.name]);
+ if(duplicateId&&p)options=[[`copy:${p.id}`,'Copie de '+p.name],...options];
+ if(!options.length){alert('Commence par ajouter une séance à la bibliothèque.');tab='library';render();return}
+ const chosen=duplicateId&&p?`copy:${p.id}`:sourceId||options[0][0];
+ show(duplicateId?'Dupliquer / répéter':'Programmer une séance',`<form class="form" data-form="plan-new">
+ ${sel('Séance','sessionId',options,chosen)}${field('Première date *','date',duplicateId&&p?p.date:selectedDate,'date',true)}${field('Heure','time',duplicateId&&p?p.time||'':'','time')}
+ ${field('Nombre de semaines (1 à 52)','count',1,'number',true)}<div class="hint">1 = une fois. 4 = 4 séances à une semaine d’intervalle.</div>${endForm('Programmer')}</form>`)}
+function raceForm(id){const x=data.races.find(q=>q.id===id)||{};
+ show(id?'Modifier la course':'Ajouter une course',`<form class="form" data-form="race" data-id="${escapeHTML(id||'')}">
+ ${field('Nom *','name',x.name,'text',true)}${field('Date *','date',x.date||iso(new Date()),'date',true)}${sel('Discipline','sport',Object.entries(RSPORT),x.sport||'brick')}
+ ${field('Lieu','place',x.place)}${field('Distance / format','distance',x.distance)}${sel('Statut','status',Object.entries(RSTATUS),x.status||'wishlist')}
+ ${field('Objectif chronométrique','goal',x.goal)}${field('Chrono réel','resultTime',x.resultTime)}${field('Classement','rank',x.rank)}${field('Lien officiel','url',x.url,'url')}${txt('Notes / bilan','notes',x.notes)}${endForm()}</form>`)}
+function programForm(){const current=iso(monday(new Date()));
+ show('Programme 10 km · 10 semaines',`<form class="form" data-form="program-new">
+ <p class="muted small">Les 30 séances seront copiées dans ton calendrier. Choisis le premier lundi du programme. Si la date n’est pas un lundi, elle sera ramenée au lundi de cette semaine.</p>
+ ${field('Début de la première semaine *','startDate',current,'date',true)}
+ ${sel('Course à associer (facultatif)','raceId',[['','Aucune'],...sortRaces(data.races).filter(r=>r.status!=='cancelled').map(r=>[r.id,r.name+' · '+dayLabel(r.date)])],'')}
+ ${sel('Jour du fractionné','intervalDay',WD.map((v,i)=>[String(i),v]),'1')}${sel('Jour du tempo','tempoDay',WD.map((v,i)=>[String(i),v]),'3')}${sel('Jour de la sortie longue','longDay',WD.map((v,i)=>[String(i),v]),'5')}
+ <div class="hint">Les jours sont identiques chaque semaine. Tu pourras ensuite déplacer chaque séance séparément.</div>${endForm('Ajouter les 30 séances')}</form>`)}
+function linkProgram(id){const p=data.programs.find(x=>x.id===id);if(!p)return;
+ show('Associer une course',`<form class="form" data-form="program-link" data-id="${escapeHTML(id)}">
+ ${sel('Compétition','raceId',[['','Aucune'],...sortRaces(data.races).map(x=>[x.id,x.name+' · '+dayLabel(x.date)])],p.raceId||'')}${endForm()}</form>`)}
+function backupModal(){show('Sauvegarde locale',`<p class="small muted">Les données restent dans le navigateur. Une sauvegarde JSON peut être conservée dans l’application Fichiers de ton téléphone, puis réimportée.</p><div class="actions">${btn('Exporter le JSON','export','','primary')}${btn('Importer un JSON','import')}</div><div class="div"></div><div class="meta">${data.sessions.length} séances · ${data.planned.length} programmations · ${data.races.length} courses · ${data.programs.length} plans</div>`)}
+function exportData(){const payload={app:'Triathlon Perso',version:FORMAT,exportedAt:new Date().toISOString(),data};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='triathlon-sauvegarde-'+iso(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function importPreview(){if(!stagedImport)return;const x=stagedImport;
+ show('Aperçu de la sauvegarde',`<p class="muted small">Fichier : ${escapeHTML(x.filename)}. Rien n’a encore été modifié sur ton téléphone.</p>
+ <div class="grid"><div class="card"><div class="meta">Séances</div><div class="stat">${x.data.sessions.length}</div></div><div class="card"><div class="meta">Calendrier</div><div class="stat">${x.data.planned.length}</div></div><div class="card"><div class="meta">Courses</div><div class="stat">${x.data.races.length}</div></div><div class="card"><div class="meta">Programmes</div><div class="stat">${x.data.programs.length}</div></div></div>
+ <div class="div"></div><p class="small"><strong>Fusionner</strong> : conserver les données locales et ajouter les entrées non présentes. En cas de même identifiant, la version locale est conservée. Les paramètres locaux non vides sont prioritaires.</p>
+ <p class="small"><strong>Remplacer</strong> : remplacer la base locale entière par celle du fichier.</p>
+ <div class="actions">${btn('Fusionner','import-merge','','primary')}${btn('Remplacer','import-replace','','danger')}</div>
+ <p class="notice">Il est recommandé d’exporter les données actuelles avant d’importer un autre fichier.</p>`)}
+function mergeData(local,incoming){const result=JSON.parse(JSON.stringify(local));
+ const fingerprint=(item,type)=>{
+  if(type==='sessions')return (item.sport||'')+'|'+String(item.name||'').toLowerCase().trim();
+  if(type==='planned')return (item.date||'')+'|'+(item.time||'')+'|'+(item.name||'')+'|'+(item.programId||'');
+  if(type==='races')return (item.name||'').toLowerCase().trim()+'|'+(item.date||'');
+  return (item.title||'')+'|'+(item.startDate||'');
+ };
+ for(const type of ['sessions','planned','races','programs']){
+  const ids=new Set(result[type].map(q=>q.id));const fps=new Set(result[type].map(q=>fingerprint(q,type)));
+  for(const item of incoming[type]){const fp=fingerprint(item,type);if(!ids.has(item.id)&&!fps.has(fp)){result[type].push(item);ids.add(item.id);fps.add(fp)}}
+ }
+ result.restDays=[...new Set([...result.restDays,...incoming.restDays])];
+ for(const k of Object.keys(result.settings))if(!result.settings[k]&&incoming.settings[k])result.settings[k]=incoming.settings[k];
+ result.seedVersion=Math.max(result.seedVersion,incoming.seedVersion);
+ return result;
+}
+function newPlanned(template,date,time='',programId='',raceId=''){return {...JSON.parse(JSON.stringify(template)),id:uid(),sessionId:template.id,date,time,done:false,programId,raceId}}
+function update(){save();close();render()}
+function findTemplate(code){if(code.startsWith('copy:'))return data.planned.find(p=>p.id===code.slice(5));return data.sessions.find(s=>s.id===code)}
+function deleteConfirm(message){return confirm(message)}
+function handleForm(e){const f=e.target;if(!f.matches('form[data-form]'))return;e.preventDefault();const v=Object.fromEntries(new FormData(f).entries()),id=f.dataset.id,type=f.dataset.form;
+ if(type==='settings'){
+  for(const x of ['ftp','pma','fcmax']){if(v[x]!==''&&(!Number.isFinite(Number(v[x]))||Number(v[x])<=0||Number(v[x])>10000)){alert('Valeur incorrecte : '+x);return}}
+  for(const x of ['pace10k','pace2k']){if(v[x]&&!parsePace(v[x])){alert('Allure invalide. Utilise le format 4:30.');return}}
+  data.settings={...data.settings,ftp:v.ftp,pma:v.pma,fcmax:v.fcmax,pace10k:v.pace10k,pace2k:v.pace2k};update();return;
+ }
+ if(type==='session'){
+  if(!v.name.trim())return;
+  const old=data.sessions.find(s=>s.id===id),brick={bikeMinutes:Number(v.bikeMinutes)||0,transitionMinutes:Number(v.transitionMinutes)||0,runMinutes:Number(v.runMinutes)||0,bikeGoal:v.bikeGoal.trim(),runGoal:v.runGoal.trim()};
+  const obj={name:v.name.trim(),sport:v.sport,category:v.category,description:v.description.trim(),goal:v.goal.trim(),minutes:Number(v.minutes)||0,brick,customStepsText:v.customStepsText.trim()};
+  if(v.sport==='brick'){
+   if(brick.bikeMinutes<=0||brick.runMinutes<=0){alert('Renseigne les durées du vélo et de la course à pied.');return}
+   obj.minutes=brick.bikeMinutes+brick.transitionMinutes+brick.runMinutes;
+   obj.steps=[g('Enchaînement triathlon',1,[r('Vélo',brick.bikeMinutes+' min'+(brick.bikeGoal?' · '+brick.bikeGoal:'')),r('Transition',brick.transitionMinutes+' min',null,'transition'),r('Course à pied',brick.runMinutes+' min'+(brick.runGoal?' · '+brick.runGoal:''))])];
+  }else if(obj.customStepsText){obj.steps=[g('Étapes personnalisées',1,obj.customStepsText.split('\n').map(x=>r('Étape',x.trim())).filter(x=>x.detail))]}
+  else obj.steps=old&&old.sport!=='brick'&&Array.isArray(old.steps)?old.steps:[];
+  if(old)Object.assign(old,obj);else data.sessions.push({id:uid(),source:'Personnalisée',...obj});update();return;
+ }
+ if(type==='plan-new'){
+  const base=findTemplate(v.sessionId),count=Number(v.count);
+  if(!base||!validDay(v.date)||!Number.isInteger(count)||count<1||count>52){alert('Date ou répétition incorrecte (1 à 52).');return}
+  for(let i=0;i<count;i++)data.planned.push(newPlanned(base,iso(plusDays(parseDay(v.date),i*7)),v.time));
+  selectedDate=v.date;viewDate=parseDay(v.date);tab='calendar';update();return;
+ }
+ if(type==='plan-edit'){
+  const x=data.planned.find(q=>q.id===id);if(!x||!validDay(v.date))return;
+  Object.assign(x,{name:v.name.trim(),date:v.date,time:v.time||'',minutes:Number(v.minutes)||0,goal:v.goal.trim(),description:v.description.trim()});
+  selectedDate=v.date;viewDate=parseDay(v.date);update();return;
+ }
+ if(type==='race'){
+  if(!v.name.trim()||!validDay(v.date)){alert('Nom ou date incorrecte.');return}
+  if(v.url&&!safeUrl(v.url)){alert('L’adresse de la course doit commencer par https:// ou http://');return}
+  const obj={name:v.name.trim(),date:v.date,sport:v.sport,place:v.place.trim(),distance:v.distance.trim(),status:v.status,goal:v.goal.trim(),resultTime:v.resultTime.trim(),rank:v.rank.trim(),url:v.url.trim(),notes:v.notes.trim()};
+  const old=data.races.find(x=>x.id===id);if(old)Object.assign(old,obj);else data.races.push({id:uid(),...obj});update();return;
+ }
+ if(type==='program-new'){
+  if(!validDay(v.startDate))return;
+  const days=[Number(v.intervalDay),Number(v.tempoDay),Number(v.longDay)];
+  if(new Set(days).size<3&&!confirm('Plusieurs séances tomberont le même jour chaque semaine. Continuer ?'))return;
+  const start=monday(parseDay(v.startDate)),pid=uid(),race=data.races.find(x=>x.id===v.raceId),last=iso(plusDays(start,69));
+  if(race&&validDay(race.date)&&(race.date<iso(plusDays(start,63))||race.date>last)&&!confirm('La course associée ne tombe pas pendant la semaine 10 du programme. Continuer malgré tout ?'))return;
+  const program={id:pid,title:PROGRAM.title,startDate:iso(start),raceId:race?race.id:'',days:{interval:days[0],tempo:days[1],long:days[2]},createdAt:new Date().toISOString()};
+  for(let w=0;w<10;w++)for(const [i,slot] of ['interval','tempo','long'].entries()){
+   const phase=w<9?Math.floor(w/3):3,source=PROGRAM.slots[slot][phase],template=data.sessions.find(s=>s.id===source)||SEEDS.find(s=>s.id===source);
+   if(template){const date=iso(plusDays(start,w*7+days[i]));data.planned.push(newPlanned(template,date,'',pid,program.raceId))}
+  }
+  data.programs.push(program);libTab='programs';tab='library';update();return;
+ }
+ if(type==='program-link'){
+  const p=data.programs.find(x=>x.id===id);if(!p)return;
+  p.raceId=v.raceId||'';
+  data.planned.filter(x=>x.programId===id).forEach(x=>x.raceId=p.raceId);update();return;
+ }
+}
+function handleClick(e){const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=b.dataset.id;
+ if(a==='close'){close();return}
+ if(a==='tab'){tab=b.dataset.tab;render();return}
+ if(a==='tab-calendar'){tab='calendar';render();return}
+ if(a==='lib-mode'){libTab=id;render();return}
+ if(a==='sport-filter'){sportFilter=id;render();return}
+ if(a==='race-filter'){raceFilter=id;render();return}
+ if(a==='cal-mode'){calMode=id;render();return}
+ if(a==='session-new'){sessionForm();return}
+ if(a==='session-edit'){sessionForm(id);return}
+ if(a==='plan-from'){planForm(id);return}
+ if(a==='plan-new'){planForm();return}
+ if(a==='plan-edit'){planForm('',id);return}
+ if(a==='plan-duplicate'){planForm('','',id);return}
+ if(a==='race-new'){raceForm();return}
+ if(a==='race-edit'){raceForm(id);return}
+ if(a==='program-new'){programForm();return}
+ if(a==='program-link'){linkProgram(id);return}
+ if(a==='program-calendar'){const p=data.programs.find(x=>x.id===id);if(p){tab='calendar';selectedDate=p.startDate;viewDate=parseDay(p.startDate);render()}return}
+ if(a==='backup'){backupModal();return}
+ if(a==='export'){exportData();return}
+ if(a==='import'){document.getElementById('file').click();return}
+ if(a==='import-merge'||a==='import-replace'){
+  if(!stagedImport)return;
+  if(a==='import-replace'&&!deleteConfirm('Remplacer toutes les données locales par celles du fichier ?'))return;
+  const next=a==='import-replace'?stagedImport.data:mergeData(data,stagedImport.data);
+  // Conserver la règle de semis, même pour les anciens fichiers exportés.
+  seed(next);
+  const previous=data;data=next;
+  if(!save()){data=previous;return}
+  stagedImport=null;close();render();alert('Importation terminée.');return;
+ }
+ if(a==='cal-prev'||a==='cal-next'){
+  const shift=a==='cal-prev'?-1:1;
+  viewDate=calMode==='month'?new Date(viewDate.getFullYear(),viewDate.getMonth()+shift,1):plusDays(viewDate,7*shift);
+  selectedDate=iso(calMode==='month'?viewDate:monday(viewDate));render();return;
+ }
+ if(a==='day'){selectedDate=id;viewDate=parseDay(id);render();return}
+ if(a==='rest-toggle'){
+  if(data.restDays.includes(selectedDate))data.restDays=data.restDays.filter(x=>x!==selectedDate);else data.restDays.push(selectedDate);
+  save();render();return;
+ }
+ if(a==='plan-done'){const p=data.planned.find(x=>x.id===id);if(p){p.done=!p.done;save();render()}return}
+ if(a==='race-register'){const r=data.races.find(x=>x.id===id);if(r){r.status='registered';save();render()}return}
+ if(a==='session-del'){
+  if(!deleteConfirm('Supprimer ce modèle ? Les entraînements déjà programmés restent enregistrés.'))return;
+  data.sessions=data.sessions.filter(x=>x.id!==id);
+ }else if(a==='plan-del'){
+  if(!deleteConfirm('Supprimer cette séance du calendrier ?'))return;
+  data.planned=data.planned.filter(x=>x.id!==id);
+ }else if(a==='race-del'){
+  if(!deleteConfirm('Supprimer cette compétition ? Les programmes associés seront conservés mais sans course.'))return;
+  data.races=data.races.filter(x=>x.id!==id);data.programs.filter(x=>x.raceId===id).forEach(x=>x.raceId='');data.planned.filter(x=>x.raceId===id).forEach(x=>x.raceId='');
+ }else if(a==='program-del'){
+  if(!deleteConfirm('Supprimer ce programme ET toutes ses séances programmées ?'))return;
+  data.programs=data.programs.filter(x=>x.id!==id);data.planned=data.planned.filter(x=>x.programId!==id);
+ }else return;
+ save();render();
+}
+document.addEventListener('submit',handleForm);
+document.addEventListener('click',handleClick);
+document.addEventListener('change',e=>{if(e.target.dataset.change==='category'){catFilter=e.target.value;render()}});
+document.getElementById('file').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  if(file.size>15*1024*1024)throw Error('Fichier trop volumineux (15 Mo maximum).');
+  const contents=JSON.parse(await file.text()),payload=contents.data||contents,parsed=normalize(payload);
+  stagedImport={filename:file.name,data:parsed};importPreview();
+ }catch(err){alert('Impossible de lire cette sauvegarde : '+err.message)}finally{e.target.value=''}
+});
+// TRIATHLON V3 ADDITIONS - conserve le stockage triathlon-perso-v1
+const V3_UI_KEY='triathlon-ui-v3';
+const SWIM_TEMPLATES=[
+ {id:'swim-tech-50',name:'Technique · 8 × 50 m',category:'specifique',totalMeters:400,description:'Alternance technique : rattrapé, respiration bilatérale et nage complète. Adapter les récupérations.',steps:[g('Technique',8,[r('50 m','25 m éducatif + 25 m nage complète'),r('Repos','20 s entre répétitions',null,'rest')])]},
+ {id:'swim-crawl-100',name:'Crawl · 6 × 100 m',category:'endurance',totalMeters:600,description:'Maintenir une technique propre et une allure régulière.',steps:[g('Crawl régulier',6,[r('100 m','Allure confortable /100 m'),r('Repos','20 s entre répétitions',null,'rest')])]},
+ {id:'swim-endurance-200',name:'Endurance · 4 × 200 m',category:'endurance',totalMeters:800,description:'Endurance en crawl, sans accélération brutale.',steps:[g('Endurance',4,[r('200 m','Allure régulière'),r('Repos','30 s entre répétitions',null,'rest')])]},
+ {id:'swim-tri-400',name:'Triathlon · 3 × 400 m',category:'endurance',totalMeters:1200,description:'Séries longues utiles à la nage continue en triathlon.',steps:[g('Séries longues',3,[r('400 m','Crawl continu'),r('Repos','45 s entre répétitions',null,'rest')])]},
+ {id:'swim-speed-50',name:'Vitesse · 12 × 50 m',category:'specifique',totalMeters:600,description:'50 m rapides mais contrôlés. Préserver la technique.',steps:[g('Vitesse',12,[r('50 m','Rapide, technique correcte'),r('Repos','30 s entre répétitions',null,'rest')])]},
+ {id:'swim-continuous',name:'Crawl continu · 400 m',category:'endurance',totalMeters:400,description:'Nager sans pause, à intensité confortable.',steps:[g('Nage continue',1,[r('400 m','Crawl facile')])]},
+ {id:'swim-kick',name:'Battements · 8 × 25 m',category:'specifique',totalMeters:200,description:'Travail technique des battements avec ou sans planche.',steps:[g('Battements',8,[r('25 m','Battements réguliers'),r('Repos','20 s entre répétitions',null,'rest')])]},
+ {id:'swim-breath',name:'Respiration · 6 × 50 m',category:'specifique',totalMeters:300,description:'Technique de respiration contrôlée, sans chercher à retenir son souffle.',steps:[g('Respiration technique',6,[r('50 m','Crawl avec rythme respiratoire confortable'),r('Repos','20 s entre répétitions',null,'rest')])]}];
+function ensureSwim(){
+ if(data.settings._v3swim===true)return;
+ SWIM_TEMPLATES.forEach(v=>{
+  const id='src-'+v.id;
+  if(!data.sessions.some(s=>s.id===id)) data.sessions.push({...structuredCloneSafe(v),id,sport:'swim',minutes:0,goal:'',source:'Exemple de natation à adapter'});
+ });
+ data.settings._v3swim=true;save();
+}
+function structuredCloneSafe(x){return JSON.parse(JSON.stringify(x))}
+ensureSwim();
+let ui={};try{ui=JSON.parse(localStorage.getItem(V3_UI_KEY)||'{}')||{}}catch(e){}
+if(['all','run','bike','swim','brick'].includes(ui.sportFilter))sportFilter=ui.sportFilter;
+if(['all',...Object.keys(CATS)].includes(ui.catFilter))catFilter=ui.catFilter;
+if(['library','programs'].includes(ui.libTab))libTab=ui.libTab;
+if(['all',...Object.keys(RSTATUS)].includes(ui.raceFilter))raceFilter=ui.raceFilter;
+function persistUI(){try{localStorage.setItem(V3_UI_KEY,JSON.stringify({sportFilter,catFilter,libTab,raceFilter}))}catch(e){}}
+const v3Render=render;
+render=function(){ensureSwim();v3Render();persistUI();};
+const v3Library=renderLibrary;
+renderLibrary=function(){
+ const html=v3Library();
+ if(libTab!=='library')return html;
+ return html.replace('<div class="filters">',`<div class="actions" style="margin:0 0 15px">${btn('Créer un fractionné','builder-new','','primary')}${tag('Bibliothèque de modèles')}</div><div class="filters">`);
+};
+const v3SessionCard=sessionCard;
+sessionCard=function(x){
+ let html=v3SessionCard(x);
+ if(x.totalMeters)html=html.replace('<div class="actions">',`<div class="meta" style="margin-top:7px">Distance : ${Number(x.totalMeters)||0} m</div><div class="actions">`);
+ if(x.builderV3)html=html.replace(btn('Modifier','session-edit',x.id,'compact'),btn('Modifier le fractionné','builder-edit',x.id,'compact'));
+ return html;
+};
+function statsWeek(start){
+ const end=iso(plusDays(parseDay(start),6));
+ const a=data.planned.filter(x=>x.date>=start&&x.date<=end);
+ return {total:a.length,done:a.filter(x=>x.done).length,min:a.reduce((n,x)=>n+(Number(x.minutes)||0),0),sports:Object.fromEntries(['run','bike','swim','brick'].map(s=>[s,a.filter(x=>x.sport===s).length]))};
+}
+const v3Home=renderHome;
+renderHome=function(){
+ const base=v3Home(),thisWeek=iso(monday(new Date())),lastWeek=iso(plusDays(parseDay(thisWeek),-7));
+ const a=statsWeek(thisWeek),b=statsWeek(lastWeek),difference=a.total-b.total;
+ const items=Object.entries(a.sports).filter(([,n])=>n).map(([sport,n])=>`<div class="row weekstat"><span>${escapeHTML(NAMES[sport])}</span><strong>${n} séance(s)</strong></div>`).join('');
+ return base+`<section class="section"><h2>Ma semaine en bref</h2><div class="card"><p class="small muted" style="margin-top:0">Organisation prévue, pas suivi des performances réelles.</p>
+ <div class="grid"><div><div class="meta">Cette semaine</div><div class="stat">${a.total}</div></div><div><div class="meta">Semaine précédente</div><div class="stat">${b.total}</div></div></div>
+ <div class="div"></div><div class="meta">Variation des séances planifiées : ${difference>0?'+':''}${difference}</div><div class="meta">Durée planifiée renseignée : ${Math.floor(a.min/60)} h ${String(a.min%60).padStart(2,'0')} min</div>
+ <div class="div"></div>${items||'<div class="muted small">Aucune séance planifiée cette semaine.</div>'}</div></section>`;
+};
+const v3Settings=renderSettings;
+renderSettings=function(){return v3Settings()+`<section class="section"><div class="card"><h2>Repères facultatifs</h2><p class="muted small">Conserve quelques chronos ou valeurs de référence. Ce n'est pas un journal de performances.</p><div class="actions">${btn('Mes repères','records','','primary')}</div></div>
+ <div class="card"><h2>Sur mon téléphone</h2><p class="small muted">iPhone : Safari → Partager → Sur l’écran d’accueil. Android : Chrome → Installer l’application. Ouvre d’abord la version GitHub Pages en HTTPS.</p>
+ <p class="small muted">Les fichiers de l’application seront disponibles hors connexion après une première visite en ligne. Les données restent locales au navigateur.</p></div></section>`;};
+const v3RaceCard=raceCard;
+raceCard=function(x){
+ let html=v3RaceCard(x);const d=Math.max(0,Math.min(28,Number(x.prepDays??7)));
+ const checked=Object.values(x.prepChecks||{}).filter(Boolean).length;
+ const notice=validDay(x.date)&&x.status!=='cancelled'&&x.status!=='completed'?`<div class="meta">Préparation : ${d?`allègement indicatif dès le ${escapeHTML(dayLabel(iso(plusDays(parseDay(x.date),-d))))}`:'aucun allègement défini'} · ${checked}/4 vérifications</div>`:'';
+ html=html.replace('<div class="actions">',`${notice}<div class="actions">${btn('Préparer la course','race-prep',x.id,'compact')}`);
+ return html;
+};
+function racePrepForm(id){
+ const x=data.races.find(r=>r.id===id);if(!x)return;
+ const c=x.prepChecks||{};
+ const checklist=[['registration','Inscription / confirmation'],['equipment','Matériel prêt'],['travel','Trajet et horaires vérifiés'],['bib','Retrait du dossard vérifié']];
+ show('Préparer · '+x.name,`<form class="form" data-form="race-prep" data-id="${escapeHTML(id)}">
+ <p class="muted small">Simple aide-mémoire. Le calendrier n'est pas modifié automatiquement.</p>
+ ${field('Période d’allègement souhaitée (jours avant la course)','prepDays',x.prepDays??7,'number')}
+ <div class="group"><div class="gtitle">Liste de vérification</div>${checklist.map(([k,title])=>`<label class="checkline"><input type="checkbox" name="${k}" ${c[k]?'checked':''}> ${escapeHTML(title)}</label>`).join('')}</div>
+ ${txt('Notes pratiques', 'prepNotes',x.prepNotes||'')}${endForm()}</form>`);
+}
+const v3Merge=mergeData;
+mergeData=function(local,incoming){
+ const result=v3Merge(local,incoming);
+ const records=[...(Array.isArray(local.settings.records)?local.settings.records:[])];
+ const seen=new Set(records.map(x=>String(x.id)));
+ for(const x of Array.isArray(incoming.settings.records)?incoming.settings.records:[]){if(x&&typeof x==='object'&&!seen.has(String(x.id))){records.push(x);seen.add(String(x.id));}}
+ result.settings.records=records;
+ return result;
+};
+function recordsView(){
+ const records=Array.isArray(data.settings.records)?data.settings.records:[];
+ const categories=[['3km','3 km'],['5km','5 km'],['10km','10 km'],['semi','Semi-marathon'],['ftp','FTP vélo'],['pma','PMA vélo'],['other','Autre']];
+ show('Mes repères personnels',`<p class="small muted">Quelques références facultatives, indépendantes de tes séances.</p>
+ <form class="form" data-form="record">
+ ${sel('Discipline / test','type',categories,'5km')}${field('Date','date',iso(new Date()),'date',true)}
+ ${field('Chrono ou valeur (ex. 22:30 ou 250 W)','value','','text',true)}
+ ${field('Note', 'note','')}${endForm('Ajouter un repère')}</form>
+ <div class="div"></div><h3>Historique</h3>
+ ${records.length?records.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(x=>`<div class="row recordrow"><div><strong>${escapeHTML(categories.find(y=>y[0]===x.type)?.[1]||x.type)}</strong><div class="meta">${escapeHTML(dayLabel(x.date))} · ${escapeHTML(x.value)} ${escapeHTML(x.note||'')}</div></div>${btn('Supprimer','record-delete',x.id,'danger compact')}</div>`).join(''):empty('Aucun repère enregistré.')}`);
+}
+function secFmt(s){s=Math.max(0,Math.round(Number(s)||0));return s%60?`${Math.floor(s/60)} min ${s%60} s`:`${s/60} min`}
+function builderRow(v={}){
+ return `<div class="group builder-block" data-builder-row><div class="row"><div class="gtitle">Bloc de fractionné</div>${btn('Retirer','builder-remove','','compact danger')}</div>
+ <div class="grid">
+ ${field('Séries','sets',v.sets??1,'number')}${field('Répétitions / série','reps',v.reps??6,'number')}
+ ${field('Effort (secondes)','effort',v.effort??60,'number')}${field('Récup. entre répétitions (s)','rest',v.rest??60,'number')}
+ ${field('Récup. entre séries (s)','seriesRest',v.seriesRest??180,'number')}${field('Distance par effort (m, facultatif)','distance',v.distance??0,'number')}
+ </div>
+ ${field('Consigne d’effort (allure, technique, zone...)','goal',v.goal||'')}
+ ${sel('Cible calculée','metric',[['','Aucune'],['ftp','% FTP vélo'],['pma','% PMA vélo'],['fcmax','% FC max']],v.metric||'')}
+ ${field('Pourcentage de la référence','percent',v.percent??100,'number')}</div>`;
+}
+function getBuilder(){
+ const form=document.querySelector('form[data-form="builder"]');if(!form)return null;
+ const v=Object.fromEntries(new FormData(form).entries());
+ const val=(scope,k)=>scope.querySelector(`[name="${k}"]`)?.value??'';
+ const number=(scope,k)=>Math.max(0,Math.min(999999,Number(val(scope,k))||0));
+ const blocks=[...form.querySelectorAll('[data-builder-row]')].map(scope=>({
+  sets:Math.floor(number(scope,'sets')),reps:Math.floor(number(scope,'reps')),
+  effort:Math.floor(number(scope,'effort')),rest:Math.floor(number(scope,'rest')),
+  seriesRest:Math.floor(number(scope,'seriesRest')),distance:Math.floor(number(scope,'distance')),
+  goal:val(scope,'goal').trim(),metric:val(scope,'metric'),percent:number(scope,'percent')
+ }));
+ return {name:(v.name||'').trim(),sport:v.sport,category:v.category,
+  description:(v.description||'').trim(),warmup:Math.floor(Number(v.warmup)||0),
+  cooldown:Math.floor(Number(v.cooldown)||0),warmDist:Math.floor(Number(v.warmDist)||0),
+  coolDist:Math.floor(Number(v.coolDist)||0),blocks};
+}
+function calculateBuilder(b){
+ let duration=60*(b.warmup+b.cooldown),distance=b.warmDist+b.coolDist;
+ for(const a of b.blocks){
+  duration+=a.sets*(a.reps*a.effort+Math.max(0,a.reps-1)*a.rest)+Math.max(0,a.sets-1)*a.seriesRest;
+  distance+=a.sets*a.reps*a.distance;
+ }
+ return {duration,distance};
+}
+function builderSteps(b){
+ const out=[];
+ if(b.warmup||b.warmDist)out.push(g('Échauffement',1,[r('Échauffement',`${b.warmup} min${b.warmDist?' · '+b.warmDist+' m':''}`)]));
+ b.blocks.forEach((a,i)=>{
+  const target=a.metric&&a.percent?{metric:a.metric,lo:a.percent}:null;
+  const parts=[r('Effort',`${secFmt(a.effort)}${a.distance?' · '+a.distance+' m':''}${a.goal?' · '+a.goal:''}`,target)];
+  if(a.rest)parts.push(r('Récupération',secFmt(a.rest)+' entre les répétitions (pas après la dernière)',null,'rest'));
+  out.push(g('Bloc '+(i+1),a.reps,parts,a.sets>1?`Récupération entre séries : ${secFmt(a.seriesRest)}. Aucune récupération après la dernière série.`:'',a.sets));
+ });
+ if(b.cooldown||b.coolDist)out.push(g('Retour au calme',1,[r('Retour au calme',`${b.cooldown} min${b.coolDist?' · '+b.coolDist+' m':''}`)]));
+ return out;
+}
+function updateBuilder(){
+ const form=document.querySelector('form[data-form="builder"]'),b=getBuilder();if(!form||!b)return;
+ const {duration,distance}=calculateBuilder(b);
+ const el=form.querySelector('#builder-total');if(el)el.textContent=`Durée estimée : ${secFmt(duration)}${distance?' · Distance : '+distance+' m':''}`;
+}
+function builderForm(id=''){
+ const x=data.sessions.find(s=>s.id===id),v=x&&x.builderV3?x.builderV3:{};
+ show(id?'Modifier le fractionné':'Créer un fractionné',`<form class="form" data-form="builder" data-id="${escapeHTML(id)}">
+ ${field('Nom *','name',v.name||x?.name||'','text',true)}
+ ${sel('Sport','sport',[['run','Course à pied'],['bike','Vélo'],['swim','Natation']],v.sport||x?.sport||'run')}
+ ${sel('Objectif','category',Object.entries(CATS),v.category||'vma')}
+ ${txt('Description','description',v.description||'')}
+ <div class="grid">${field('Échauffement (minutes)','warmup',v.warmup??10,'number')}${field('Retour au calme (minutes)','cooldown',v.cooldown??10,'number')}
+ ${field('Échauffement (mètres, facultatif)','warmDist',v.warmDist??0,'number')}${field('Retour au calme (mètres, facultatif)','coolDist',v.coolDist??0,'number')}</div>
+ <div id="builder-rows">${(Array.isArray(v.blocks)&&v.blocks.length?v.blocks:[{}]).map(builderRow).join('')}</div>
+ <div class="actions">${btn('+ Ajouter un bloc','builder-add')}</div>
+ <div id="builder-total" class="card" style="margin:0" aria-live="polite"></div>
+ <p class="hint">La durée suppose qu’il n’y a pas de récupération après la dernière répétition d’une série, ni après la dernière série.</p>
+ ${endForm('Enregistrer dans la bibliothèque')}</form>`);
+ updateBuilder();
+}
+function interceptClickV3(e){
+ const b=e.target.closest('[data-a]');if(!b)return;
+ const a=b.dataset.a,id=b.dataset.id;
+ if(!['builder-new','builder-edit','builder-add','builder-remove','race-prep','records','record-delete'].includes(a))return;
+ e.preventDefault();e.stopImmediatePropagation();
+ if(a==='builder-new'){builderForm();return}
+ if(a==='builder-edit'){builderForm(id);return}
+ if(a==='builder-add'){document.querySelector('#builder-rows')?.insertAdjacentHTML('beforeend',builderRow({}));updateBuilder();return}
+ if(a==='builder-remove'){const row=b.closest('[data-builder-row]');if(document.querySelectorAll('[data-builder-row]').length<=1){alert('Conserve au moins un bloc.');return}row?.remove();updateBuilder();return}
+ if(a==='race-prep'){racePrepForm(id);return}
+ if(a==='records'){recordsView();return}
+ if(a==='record-delete'){
+  if(!confirm('Supprimer ce repère ?'))return;
+  data.settings.records=(data.settings.records||[]).filter(x=>x.id!==id);save();recordsView();return;
+ }
+}
+document.addEventListener('click',interceptClickV3,true);
+document.addEventListener('input',e=>{if(e.target.closest('form[data-form="builder"]'))updateBuilder()});
+function interceptSubmitV3(e){
+ const form=e.target;if(!form.matches('form[data-form="builder"],form[data-form="race-prep"],form[data-form="record"]'))return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const type=form.dataset.form,id=form.dataset.id;
+ if(type==='builder'){
+  const b=getBuilder();if(!b||!b.name){alert('Donne un nom à la séance.');return}
+  if(!['run','bike','swim'].includes(b.sport)||!CATS[b.category]||!b.blocks.length||
+    b.blocks.some(x=>x.sets<1||x.sets>20||x.reps<1||x.reps>100||x.effort<1||x.effort>86400||x.percent>500)||
+    b.warmup<0||b.cooldown<0||b.warmDist<0||b.coolDist<0){alert('Vérifie les blocs, les répétitions et les durées.');return}
+  const totals=calculateBuilder(b);
+  if(totals.duration>24*3600){alert('La durée dépasse 24 heures.');return}
+  const values={name:b.name,sport:b.sport,category:b.category,description:b.description,
+    minutes:Math.ceil(totals.duration/60),totalMeters:totals.distance,steps:builderSteps(b),
+    goal:'',builderV3:b,source:'Créée avec le constructeur de fractionnés'};
+  const old=data.sessions.find(x=>x.id===id);
+  if(old)Object.assign(old,values);else data.sessions.push({id:uid(),...values});
+  tab='library';libTab='library';save();close();render();return;
+ }
+ if(type==='race-prep'){
+  const x=data.races.find(q=>q.id===id);if(!x)return;
+  const v=Object.fromEntries(new FormData(form).entries());
+  const days=Number(v.prepDays);if(!Number.isInteger(days)||days<0||days>28){alert('Choisis entre 0 et 28 jours.');return}
+  x.prepDays=days;x.prepNotes=(v.prepNotes||'').trim();x.prepChecks=Object.fromEntries(['registration','equipment','travel','bib'].map(k=>[k,!!v[k]]));
+  save();close();render();return;
+ }
+ if(type==='record'){
+  const v=Object.fromEntries(new FormData(form).entries());
+  if(!validDay(v.date)||!v.value?.trim()){alert('Date ou valeur incorrecte.');return}
+  if(!Array.isArray(data.settings.records))data.settings.records=[];
+  data.settings.records.push({id:uid(),type:v.type,date:v.date,value:v.value.trim(),note:(v.note||'').trim()});
+  save();recordsView();return;
+ }
+}
+document.addEventListener('submit',interceptSubmitV3,true);
+// Préserver les filtres après une sélection dans le formulaire de catégories.
+document.addEventListener('change',e=>{if(e.target.dataset.change==='category')setTimeout(persistUI,0)});
+// Service worker : uniquement sur HTTPS ou localhost, pas dans la prévisualisation file://.
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('Mode hors ligne indisponible',err)));
+}
+
+render();
+})();
+</script></body></html>
