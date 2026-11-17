@@ -1,4 +1,4 @@
-const CACHE = 'triathlon-perso-pwa-v42-20261117';
+const CACHE = 'triathlon-perso-v5-20261117';
 const CORE = ['./', './index.html', './manifest.webmanifest', './triathlon-icon.svg', './triathlon-icon-192.png', './triathlon-icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));

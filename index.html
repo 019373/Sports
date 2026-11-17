@@ -459,6 +459,48 @@ nav {
   }
 }
 
+
+/* TRIATHLON V5 BIBLIOTHEQUE JSON : navigation et mise en page */
+html,body{width:100%!important;max-width:100%!important;overflow-x:clip!important}
+html{min-height:100%;scrollbar-width:none!important;scroll-behavior:auto!important}
+body{min-height:100dvh!important;margin:0!important;scrollbar-width:none!important}
+*{scrollbar-width:none!important}
+*::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+body>header,.head,header.head{position:relative!important;top:auto!important;left:0!important;right:0!important;
+  border:0!important;border-bottom:0!important;box-shadow:none!important;overflow:visible!important;
+  display:flex!important;align-items:center!important;gap:10px!important;padding:10px 14px!important;
+  min-height:57px!important;height:auto!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body>header::after,.head::after,header.head::after{display:none!important}
+header .v5-save-first{order:-1!important;margin:0!important;flex:0 0 auto!important;padding:8px 10px!important;font-size:12px!important}
+header .brand{order:1!important;flex:1 1 auto!important;min-width:0!important;margin:0!important;font-size:16px!important}
+header .head-inner,.head .header-inner{width:100%!important;display:flex!important;align-items:center!important;gap:10px!important;border:0!important;box-shadow:none!important}
+main{padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))!important;min-width:0!important}
+body>nav,nav{position:fixed!important;inset:auto 0 0 0!important;bottom:0!important;top:auto!important;
+ transform:translate3d(0,0,0)!important;max-height:none!important;min-height:0!important;height:auto!important;
+ margin:0!important;z-index:999!important;padding:5px 4px calc(7px + env(safe-area-inset-bottom,0px))!important;
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;align-items:center!important;
+ background:#101720fa!important}
+body>nav button,nav button{min-width:0!important;min-height:39px!important;font-size:11px!important;padding:6px 1px!important}
+@media(display-mode:standalone){body{padding-top:env(safe-area-inset-top,0px)!important}}
+.v5-references{margin:12px 0!important;padding:0!important;border:1px solid var(--line,#2a3240);
+  background:var(--panel,#151a22);border-radius:13px;overflow:hidden}
+.v5-references summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+  list-style:none;padding:13px 15px;font-size:15px;font-weight:700}
+.v5-references summary::-webkit-details-marker{display:none}
+.v5-references summary::after{content:'⌄';font-size:19px;opacity:.7}
+.v5-references[open] summary::after{content:'⌃'}
+.v5-references-content{padding:0 14px 14px}
+.v5-import-link{margin:10px 0 15px!important;display:flex;gap:8px;flex-wrap:wrap}
+.v5-program{border:1px solid var(--line,#2a3240);border-radius:13px;padding:13px;margin:12px 0}
+.v5-program .actions{margin-top:10px}
+.v5-mini{font-size:12px;line-height:1.5;color:var(--muted,#98a4b5)}
+.v5-associations{margin:10px 0 4px;padding:10px;border-radius:10px;background:var(--panel2,#202733)}
+.v5-associations summary{font-size:13px;cursor:pointer}
+.v5-associations ul{padding-left:18px;margin:8px 0 0;font-size:12px;line-height:1.6}
+@media(max-width:430px){body>header,.head,header.head{padding-left:9px!important;padding-right:9px!important}
+ header .brand{font-size:14px!important} main{padding-left:12px!important;padding-right:12px!important}
+ nav button{font-size:10px!important}}
+
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./triathlon-icon.svg" type="image/svg+xml">
@@ -1279,6 +1321,310 @@ document.addEventListener('submit',e=>{
   if(x&&V4_GOALS.some(g=>g[0]===v.objective&&v.objective!=='all')){
    x.objective=v.objective;save();close();render();
   }
+ }
+},true);
+
+
+// TRIATHLON V5 BIBLIOTHEQUE JSON
+// Les données existantes sont conservées dans la clé triathlon-perso-v1.
+const V5_FORMAT='triathlon-session-pack-v1';
+let v5Pending=null;
+function v5Clean(v,max=5000){return typeof v==='string'?v.trim().slice(0,max):'';}
+function v5Norm(v){return v5Clean(v,300).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();}
+function v5Hash(v){let h=2166136261;for(const c of String(v)){h=Math.imul(h^c.charCodeAt(0),16777619)}return(h>>>0).toString(36);}
+function v5Sport(value,reference=''){
+ const a=v5Norm(value),txt=v5Norm(reference);
+ if(/brick|enchain|transition|combine/.test(a))return 'brick';
+ if(/natat|swim|nage|piscine/.test(a))return 'swim';
+ if(/velo|bike|cycl|vtt|home.train/.test(a))return 'bike';
+ if(/course|running|run|footing|trail|athlet/.test(a))return 'run';
+ if(/triathlon/.test(a))return 'brick';
+ if(/enchain|transition|brick/.test(txt))return 'brick';
+ if(/natat|nage|piscine/.test(txt))return 'swim';
+ if(/velo|bike|cycl/.test(txt))return 'bike';
+ return 'run';
+}
+function v5Goal(v,description='',sport='run'){
+ const t=v5Norm(v||description);
+ if(/semi|21[,.]1 ?km|21 ?km/.test(t))return 'semi';
+ if(/10 ?km|10k\b/.test(t))return '10km';
+ if(/5 ?km|5k\b/.test(t))return '5km';
+ if(/3 ?km|3k\b/.test(t))return '3km';
+ if(/2 ?km|2k\b/.test(t))return '2km';
+ if(/triathlon|brick|enchain|transition/.test(t)||sport==='brick')return 'triathlon';
+ return 'general';
+}
+function v5Category(v,desc=''){
+ const t=v5Norm(v||desc);const keys=Object.keys(CATS);
+ const candidate=/sprint/.test(t)?'sprint':/vma|fractionne/.test(t)?'vma':
+ /pma|vo2/.test(t)?'pma':/seuil|threshold/.test(t)?'seuil':
+ /tempo|allure soutenue/.test(t)?'tempo':/specifi/.test(t)?'specifique':
+ /techni/.test(t)?'technique':/endur|fondamental|zone 2|z2/.test(t)?'endurance':'endurance';
+ return keys.includes(candidate)?candidate:(keys.includes('specifique')?'specifique':keys[0]);
+}
+function v5Day(v){
+ if(Number.isInteger(v)&&v>=0&&v<=6)return v;
+ const s=v5Norm(v);
+ if(/^\d$/.test(s)&&Number(s)<=6)return Number(s);
+ const names=['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+ const i=names.findIndex(x=>s===x||s===x.slice(0,3));return i;
+}
+function v5String(v,max=5000){if(v==null)return '';if(typeof v!=='string')throw Error('Un texte attendu n’est pas valide.');return v.trim().slice(0,max);}
+function v5Rows(raw){
+ if(Array.isArray(raw))return {sessions:raw,programs:[]};
+ if(!raw||typeof raw!=='object')throw Error('Le fichier doit contenir un objet ou une liste.');
+ const all=[],programs=[];
+ if(Array.isArray(raw.sessions))all.push(...raw.sessions);
+ if(raw.program)programs.push(raw.program);
+ if(Array.isArray(raw.programs))programs.push(...raw.programs);
+ // Une sauvegarde complète est admise, mais seules ses séances sont importées.
+ if(raw.data&&Array.isArray(raw.data.sessions))all.push(...raw.data.sessions);
+ if(!all.length&&!programs.length)throw Error('Aucune séance ou aucun programme reconnu.');
+ if(all.length>700||programs.length>30)throw Error('Fichier trop volumineux.');
+ const out=[];const meta=[];
+ function addSession(s,parent=null,week=0){
+  if(!s||typeof s!=='object'||Array.isArray(s))throw Error('Séance invalide dans le JSON.');
+  const name=v5String(s.name||s.title,150);
+  if(!name)throw Error('Chaque séance doit avoir un nom.');
+  const sport=v5Sport(s.sport||s.type||parent?.sport||'',name+' '+(s.description||''));
+  let description=v5String(s.description||s.instructions||'',8000);
+  if(Array.isArray(s.steps)){
+   const lines=s.steps.slice(0,120).map(t=>{
+    if(typeof t==='string')return v5Clean(t,300);
+    if(!t||typeof t!=='object')return '';
+    return [t.title,t.duration,t.distance,t.intensity,t.recovery].map(x=>v5Clean(x,200)).filter(Boolean).join(' · ');
+   }).filter(Boolean);
+   if(lines.length)description+=(description?'\n':'')+lines.join('\n');
+  }
+  const mins=Number(s.minutes??s.durationMinutes??0);
+  if(!Number.isFinite(mins)||mins<0||mins>1440)throw Error('Durée de séance incorrecte : '+name);
+  const w=Number(s.week??week??0),day=v5Day(s.day??s.weekday);
+  const raceName=v5Clean(s.raceName||parent?.raceName||'',150);
+  const raceId=v5Clean(s.raceId||'',150);
+  const goal=v5Goal(s.objective||parent?.objective||'',name+' '+description+' '+raceName,sport);
+  const pid=parent?.id||v5Clean(s.programId||'',150);
+  const category=v5Category(s.category||s.intensity||'',name+' '+description);
+  const value={name,sport,category,objective:goal,description,minutes:Math.round(mins),
+   goal:v5Clean(s.goal||parent?.goal||'',400),source:v5Clean(s.source||parent?.source||'Import JSON',200),
+   raceName,raceId,programId:pid,programWeek:Number.isInteger(w)&&w>=0&&w<=104?w:0,
+   programDay:day>=0?day:null};
+  value.id='pack-'+v5Hash([value.programId,value.programWeek,value.programDay,value.name,value.description,value.sport].join('|'));
+  out.push(value);
+ }
+ all.forEach(s=>addSession(s));
+ for(const p of programs){
+  if(!p||typeof p!=='object')throw Error('Programme non valide.');
+  const name=v5String(p.name||p.title,150);
+  if(!name)throw Error('Nom du programme manquant.');
+  const id='pack-program-'+v5Hash(name+'|'+v5Norm(p.objective||''));
+  const parent={id,name,sport:v5Clean(p.sport,40),objective:v5Clean(p.objective,80),
+   raceName:v5Clean(p.raceName,150),goal:v5Clean(p.goal,400),source:v5Clean(p.source||name,200)};
+  meta.push(parent);
+  if(Array.isArray(p.sessions))p.sessions.forEach(s=>addSession(s,parent,Number(s?.week)||0));
+  if(Array.isArray(p.weeks)){
+   p.weeks.forEach((w,i)=>{
+    if(!w||!Array.isArray(w.sessions))throw Error('Semaine invalide dans '+name);
+    const week=Number(w.week??(i+1));
+    if(!Number.isInteger(week)||week<1||week>104)throw Error('Numéro de semaine invalide.');
+    w.sessions.forEach(s=>addSession(s,parent,week));
+   });
+  }
+ }
+ if(out.length>700||!out.length)throw Error('Il faut entre 1 et 700 séances.');
+ return {sessions:out,programs:meta};
+}
+function v5Template(){
+ return {format:V5_FORMAT,program:{name:'Mon programme 10 km',sport:'course à pied',objective:'10km',
+  raceName:'',source:'Programme personnel',weeks:[
+   {week:1,sessions:[{day:'mardi',name:'6 × 400 m',category:'vma',minutes:45,
+    description:'Échauffement 15 min, 6 × 400 m, récupération 1 min 30, retour au calme.'},
+    {day:'samedi',name:'Footing 50 min',category:'endurance',minutes:50,description:'Allure facile.'}]},
+   {week:2,sessions:[{day:'jeudi',name:'Tempo 2 × 10 min',category:'tempo',minutes:50,
+    description:'15 min faciles + 2 × 10 min tempo, récupération 3 min + retour au calme.'}]}
+  ]}};
+}
+function v5DownloadTemplate(){
+ const blob=new Blob([JSON.stringify(v5Template(),null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='modele-programme-triathlon.json';document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1200);
+}
+function v5Input(){
+ let input=document.getElementById('v5-pack-input');if(input)return input;
+ input=document.createElement('input');input.type='file';input.accept='.json,application/json';
+ input.id='v5-pack-input';input.hidden=true;document.body.append(input);
+ input.addEventListener('change',async()=>{
+  const file=input.files?.[0];input.value='';if(!file)return;
+  try{
+   if(file.size>5*1024*1024)throw Error('Fichier supérieur à 5 Mo.');
+   const pack=v5Rows(JSON.parse(await file.text()));v5Pending=pack;
+   const counts={};pack.sessions.forEach(x=>counts[x.sport]=(counts[x.sport]||0)+1);
+   const labels={run:'Course à pied',bike:'Vélo',swim:'Natation',brick:'Enchaînement'};
+   const grouped=Object.entries(counts).map(([k,n])=>`${n} ${labels[k]||k}`).join(' · ');
+   const existing=new Set(data.sessions.map(x=>String(x.id)));
+   const duplicates=pack.sessions.filter(x=>existing.has(x.id)||data.sessions.some(y=>y.name===x.name&&y.sport===x.sport&&y.description===x.description)).length;
+   show('Importer des séances',`<p><strong>${pack.sessions.length} séance(s)</strong> détectée(s).</p>
+    <p class="v5-mini">${escapeHTML(grouped)} · ${pack.programs.length} programme(s). ${duplicates} doublon(s) potentiels.</p>
+    <p class="v5-mini">Les séances seront classées automatiquement par sport et par objectif. Aucune course ni séance existante ne sera supprimée.</p>
+    <div class="actions">${btn('Ajouter à la bibliothèque','v5-confirm','','primary')}${btn('Annuler','v5-cancel')}</div>`);
+  }catch(err){v5Pending=null;alert('Import impossible : '+err.message)}
+ });
+ return input;
+}
+function v5ImportClick(){v5Input().click();}
+function v5Programs(){
+ const items=Array.isArray(data.settings?.importedPrograms)?data.settings.importedPrograms:[];
+ return items.map(p=>{
+  const list=data.sessions.filter(x=>x.programId===p.id);
+  return `<div class="v5-program"><strong>${escapeHTML(p.name)}</strong><div class="v5-mini">${list.length} séances importées · ${escapeHTML(p.objective||'Entraînement')}</div>
+    <div class="actions">${btn('Voir les semaines','v5-program-view',p.id)}${btn('Programmer','v5-program-plan',p.id,'primary')}</div></div>`;
+ }).join('');
+}
+const v5PreviousLibrary=renderLibrary;
+renderLibrary=function(){
+ let html=v5PreviousLibrary();
+ if(libTab==='library'){
+  const insert=`<div class="v5-import-link">${btn('Importer un JSON','v5-import','','primary')}${btn('Modèle JSON','v5-template')}</div>`;
+  return html.includes('<div class="filters">')?html.replace('<div class="filters">',insert+'<div class="filters">'):insert+html;
+ }
+ if(libTab==='programs')return html+`<section class="section"><h2>Mes programmes importés</h2>${v5Programs()||'<p class="v5-mini">Aucun programme importé.</p>'}</section>`;
+ return html;
+};
+const v5PreviousRaceCard=raceCard;
+raceCard=function(x){
+ const html=v5PreviousRaceCard(x);
+ const normName=v5Norm(x.name);
+ const related=data.sessions.filter(s=>s.raceId===x.id||(s.raceName&&v5Norm(s.raceName)===normName)).slice(0,12);
+ if(!related.length)return html;
+ const block=`<details class="v5-associations"><summary>${related.length} séance(s) liée(s) à cette course</summary><ul>${related.map(s=>`<li>${escapeHTML(s.name)} (${escapeHTML(NAMES[s.sport]||s.sport)})</li>`).join('')}</ul></details>`;
+ return html.replace('<div class="actions">',block+'<div class="actions">');
+};
+function v5CollapseSettings(){
+ const main=document.querySelector('main');if(!main)return;
+ const headings=[...main.querySelectorAll('h2,h3')];
+ for(const h of headings){
+  const name=v5Norm(h.textContent),card=h.closest('.card,.panel');if(!card)continue;
+  if(/^(reperes facultatifs|sur mon telephone|a propos du stockage|stockage local)$/.test(name)){
+   const section=card.parentElement?.classList.contains('section')&&card.parentElement.children.length===1?card.parentElement:card;
+   section.remove();continue;
+  }
+  if(/mes references|references sportives|mes parametres sportifs/.test(name)&&!card.closest('.v5-references')){
+   const details=document.createElement('details');details.className='v5-references';
+   const summary=document.createElement('summary');summary.textContent=h.textContent;
+   const content=document.createElement('div');content.className='v5-references-content';
+   h.remove();while(card.firstChild)content.append(card.firstChild);
+   details.append(summary,content);card.replaceWith(details);
+  }
+ }
+}
+function v5Header(){
+ const header=document.querySelector('body > header');if(!header)return;
+ const save=[...header.querySelectorAll('button')].find(b=>/sauvegarde/i.test(b.textContent));
+ if(save&&!save.classList.contains('v5-save-first')){
+  save.classList.add('v5-save-first');save.parentElement.insertBefore(save,save.parentElement.firstChild);
+ }
+}
+function v5AddModalImportButton(){
+ const dialog=document.querySelector('dialog[open],dialog[style*="display: block"]');if(!dialog)return;
+ const form=dialog.querySelector('form[data-form="session"],form[data-form="session-add"]');
+ if(!form||dialog.querySelector('.v5-import-from-modal'))return;
+ const area=document.createElement('div');area.className='v5-import-from-modal v5-import-link';
+ area.innerHTML=btn('Importer plusieurs séances (JSON)','v5-import','','primary')+btn('Télécharger un modèle','v5-template');
+ form.after(area);
+}
+const v5PreviousRender=render;
+render=function(){v5PreviousRender();v5CollapseSettings();v5Header();};
+function v5ProgramDetails(id){
+ const p=(data.settings?.importedPrograms||[]).find(x=>x.id===id);if(!p)return;
+ const list=data.sessions.filter(x=>x.programId===id).sort((a,b)=>(a.programWeek||0)-(b.programWeek||0)||(a.programDay??8)-(b.programDay??8));
+ const groups=[...new Set(list.map(x=>x.programWeek||0))];
+ show(p.name,groups.map(w=>`<details class="v5-program" ${w===groups[0]?'open':''}><summary><strong>Semaine ${w||'libre'}</strong></summary>
+ ${list.filter(x=>(x.programWeek||0)===w).map(s=>`<p class="v5-mini"><strong>${escapeHTML(['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'][s.programDay]||'Jour libre')} : ${escapeHTML(s.name)}</strong><br>${escapeHTML(s.description)}</p>`).join('')}</details>`).join('')+`<div class="actions">${btn('Programmer','v5-program-plan',id,'primary')}</div>`);
+}
+function v5ProgramPlan(id){
+ const p=(data.settings?.importedPrograms||[]).find(x=>x.id===id);if(!p)return;
+ const now=new Date();now.setDate(now.getDate()+(8-now.getDay())%7);
+ show('Programmer · '+p.name,`<p class="v5-mini">Le premier jour doit être un lundi. Seules les séances avec un jour défini seront placées.</p>
+ <form data-form="v5-program-plan" data-id="${escapeHTML(id)}" class="form">
+ ${field('Premier lundi','start',iso(now),'date',true)}${endForm('Programmer les séances')}</form>`);
+}
+function v5ConfirmImport(){
+ if(!v5Pending)return;
+ const incoming=v5Pending;
+ const seen=new Set(data.sessions.map(s=>String(s.id)));
+ const toAdd=[];
+ for(const item of incoming.sessions){
+  if(seen.has(item.id))continue;
+  if(data.sessions.some(s=>s.sport===item.sport&&s.name===item.name&&s.description===item.description&&s.programId===item.programId&&(s.programWeek||0)===(item.programWeek||0)&&(s.programDay??-1)===(item.programDay??-1)))continue;
+  const s={...item};
+  if(!s.raceId&&s.raceName){const r=data.races.find(x=>v5Norm(x.name)===v5Norm(s.raceName));if(r)s.raceId=r.id;}
+  toAdd.push(s);seen.add(s.id);
+ }
+ const oldPrograms=Array.isArray(data.settings.importedPrograms)?data.settings.importedPrograms:[];
+ const newPrograms=[...oldPrograms];
+ for(const meta of incoming.programs)if(!newPrograms.some(p=>p.id===meta.id))newPrograms.push(meta);
+ data.sessions.push(...toAdd);data.settings.importedPrograms=newPrograms;
+ try{
+  save();const saved=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(!saved||!Array.isArray(saved.sessions)||!toAdd.every(x=>saved.sessions.some(y=>y.id===x.id)))throw Error('Vérification de sauvegarde échouée.');
+ }catch(err){
+  data.sessions.splice(data.sessions.length-toAdd.length,toAdd.length);
+  data.settings.importedPrograms=oldPrograms;
+  alert('Stockage indisponible : import annulé. '+err.message);return;
+ }
+ v5Pending=null;close();render();alert(`${toAdd.length} séance(s) ajoutée(s). ${incoming.sessions.length-toAdd.length} doublon(s) ignoré(s).`);
+}
+// Met aussi l'import JSON en bas du formulaire d'ajout manuel.
+if(typeof MutationObserver!=='undefined'){
+ const watcher=new MutationObserver(()=>v5AddModalImportButton());
+ watcher.observe(document.body,{childList:true,subtree:true});
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-a]');if(!b)return;
+ const a=b.dataset.a;
+ if(a==='session-new'||a==='session-add'||a==='new-session')setTimeout(v5AddModalImportButton,0);
+ if(!['v5-import','v5-template','v5-confirm','v5-cancel','v5-program-view','v5-program-plan'].includes(a))return;
+ e.preventDefault();e.stopImmediatePropagation();
+ if(a==='v5-import')v5ImportClick();
+ if(a==='v5-template')v5DownloadTemplate();
+ if(a==='v5-confirm')v5ConfirmImport();
+ if(a==='v5-cancel'){v5Pending=null;close();}
+ if(a==='v5-program-view')v5ProgramDetails(b.dataset.id);
+ if(a==='v5-program-plan')v5ProgramPlan(b.dataset.id);
+},true);
+document.addEventListener('submit',e=>{
+ const f=e.target;if(f.dataset.form!=='v5-program-plan')return;
+ e.preventDefault();e.stopImmediatePropagation();
+ const start=f.querySelector('[name="start"]')?.value,id=f.dataset.id,first=new Date(start+'T12:00:00');
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(start||'')||isNaN(first)||iso(first)!==start||first.getDay()!==1){alert('Choisis un lundi valide.');return;}
+ const list=data.sessions.filter(x=>x.programId===id&&x.programWeek>0&&x.programDay!==null);
+ let added=0;
+ for(const s of list){
+  const d=new Date(first);d.setDate(first.getDate()+7*(s.programWeek-1)+s.programDay);
+  const date=iso(d);
+  if(data.planned.some(x=>x.sourceSessionId===s.id&&x.date===date))continue;
+  data.planned.push({...s,id:uid(),sourceSessionId:s.id,date,time:'',done:false});added++;
+ }
+ save();close();render();alert(`${added} séance(s) programmée(s).`);
+},true);
+// Glissement latéral pour naviguer entre les cinq onglets, sans gêner les filtres.
+let v5Touch=null;
+document.addEventListener('touchstart',e=>{
+ const t=e.touches[0];v5Touch=t?{x:t.clientX,y:t.clientY,blocked:!!e.target.closest('dialog,button,input,textarea,select,a,details,.filters,.calgrid')}:null;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+ if(!v5Touch||v5Touch.blocked)return;
+ const t=e.changedTouches[0],dx=t.clientX-v5Touch.x,dy=t.clientY-v5Touch.y;v5Touch=null;
+ if(Math.abs(dx)<110||Math.abs(dx)<Math.abs(dy)*1.8)return;
+ const buttons=[...document.querySelectorAll('nav button[data-tab]')];
+ const current=buttons.findIndex(x=>x.classList.contains('active'));
+ const next=current+(dx<0?1:-1);
+ if(current>=0&&next>=0&&next<buttons.length)buttons[next].click();
+},{passive:true});
+document.addEventListener('click',e=>{
+ if(e.target.closest('nav button')){
+  const reset=()=>{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;};
+  requestAnimationFrame(reset);setTimeout(reset,100);
  }
 },true);
 
