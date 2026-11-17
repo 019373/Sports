@@ -331,6 +331,134 @@ nav button {
   }
 }
 
+
+/* TRIATHLON V4.2 IPHONE FIX */
+
+/* Affichage sous la barre d'état iOS */
+html {
+  scroll-behavior:auto !important;
+  scroll-padding-top:0 !important;
+}
+
+body {
+  margin:0 !important;
+}
+
+@media (display-mode:standalone) {
+  body {
+    padding-top:env(safe-area-inset-top,0px) !important;
+  }
+}
+
+/* En-tête normal, sans superposition */
+.head,
+header.head,
+body > header {
+  position:relative !important;
+  top:auto !important;
+  bottom:auto !important;
+  margin:0 !important;
+  padding:11px 14px !important;
+  height:auto !important;
+  min-height:60px !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  background:var(--bg,#0b0e13) !important;
+  z-index:10 !important;
+}
+
+.head .brand,
+header .brand {
+  min-width:0 !important;
+  line-height:1.18 !important;
+}
+
+/* Contenu */
+main {
+  padding-top:15px !important;
+  padding-bottom:calc(
+    116px + env(safe-area-inset-bottom,0px)
+  ) !important;
+  min-width:0 !important;
+}
+
+/* Navigation */
+nav {
+  z-index:70 !important;
+  padding-top:5px !important;
+  padding-bottom:calc(
+    7px + env(safe-area-inset-bottom,0px)
+  ) !important;
+}
+
+/* Calendrier compact sur téléphone */
+@media (max-width:600px) {
+
+  main .top {
+    margin-bottom:13px !important;
+  }
+
+  main .subtitle {
+    line-height:1.35 !important;
+  }
+
+  main .filters {
+    margin-bottom:10px !important;
+  }
+
+  .calendar-bar {
+    margin-top:1px !important;
+    margin-bottom:9px !important;
+    min-height:37px !important;
+  }
+
+  .calgrid {
+    grid-template-columns:
+      repeat(7,minmax(0,1fr)) !important;
+    gap:4px !important;
+  }
+
+  .calgrid .weekname {
+    padding:5px 0 !important;
+    font-size:11px !important;
+  }
+
+  .calgrid .day {
+    height:52px !important;
+    min-height:52px !important;
+    max-height:52px !important;
+    padding:6px 5px !important;
+    border-radius:9px !important;
+    overflow:hidden !important;
+    text-align:left !important;
+  }
+
+  .calgrid .number {
+    font-size:13px !important;
+    line-height:1.3 !important;
+  }
+
+  .calgrid .dots {
+    margin-top:6px !important;
+    gap:3px !important;
+  }
+
+  .calgrid .dot {
+    width:5px !important;
+    height:5px !important;
+  }
+
+  main .section {
+    margin-top:17px !important;
+  }
+
+  main .section .top {
+    margin-bottom:10px !important;
+  }
+}
+
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./triathlon-icon.svg" type="image/svg+xml">
@@ -1156,4 +1284,27 @@ document.addEventListener('submit',e=>{
 
 render();
 })();
-</script></body></html>
+</script>
+<script>
+// TRIATHLON V4.2 NAV FIX
+(function(){
+  function resetScroll(){
+    window.scrollTo(0,0);
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+
+    const main=document.querySelector("main");
+    if(main)main.scrollTop=0;
+  }
+
+  document.addEventListener("click",function(e){
+    if(!e.target.closest("nav button"))return;
+
+    resetScroll();
+    requestAnimationFrame(resetScroll);
+    setTimeout(resetScroll,80);
+  });
+})();
+</script>
+
+</body></html>
